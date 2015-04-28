@@ -9,35 +9,36 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
-# 
+#
 
 from setuptools import setup, find_packages
 from disthelpers import extract_messages, init_catalog, update_catalog
 from disthelpers import build, build_catalog, build_man
-import glob
-import fnmatch
-import os
 import vestricius
 
 setup(name='vestricius',
       version=vestricius.__version__,
-      description='Insert description here',
+      description='Inspect crash archives',
       long_description='''
-      Here a longer description here
+      Vestricius is an Haruspex, a priest who practiced divination by
+      looking at the entrails of animals. `vestricius(1)` is a command line
+      tool which allows the user to get a backtrace from a core dump file.
       ''',
-      license='GPLv3',
-      url='https://some.url/',
+      license='GPLv3+',
+      url='https://github.com/elebihan/vestricius/',
       platforms=['Any'],
       keywords=[],
-      install_requires=[],
+      install_requires=[
+          'colorama>=0.3',
+      ],
       classifiers=[
           'Development Status :: 3 - Alpha',
           'Programming Language :: Python :: 3',
@@ -49,7 +50,7 @@ setup(name='vestricius',
           'console_scripts': [
               'vestricius = vestricius.cli:main',
           ],
-       },
+      },
       author='Eric Le Bihan',
       author_email='eric.le.bihan.dev@free.fr',
       cmdclass={'build': build,

@@ -22,9 +22,12 @@ import argparse
 from vestricius import __version__
 from vestricius.presets import PresetManager
 from vestricius.utils import setup_i18n
+from vestricius.log import setup_logging
 from gettext import gettext as _
 
 setup_i18n()
+
+setup_logging()
 
 
 def parse_cmd_list(args):
