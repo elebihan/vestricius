@@ -38,11 +38,28 @@ def parse_cmd_list(args):
 
 
 def parse_cmd_new(args):
-    pass
+    manager = PresetManager()
+    manager.create(None, args.preset)
 
 
 def parse_cmd_edit(args):
-    pass
+    manager = PresetManager()
+    manager.edit(args.preset)
+
+
+def parse_cmd_remove(args):
+    must_remove = False
+    manager = PresetManager()
+    if not args.force:
+        prompt = _("Do you REALLY want to delete the preset '{}' [y/N]? ")
+        value = input(prompt.format(args.preset))
+        if value.lower() == _('y'):
+            must_remove = True
+    else:
+        must_remove = True
+    if must_remove:
+        manager.remove(args.preset)
+        print(_("Deleted '{}'").format(args.preset))
 
 
 def main():
@@ -73,6 +90,17 @@ def main():
     p.add_argument('preset',
                    metavar=_('NAME'),
                    help=_('preset to edit'))
+    p.set_defaults(func=parse_cmd_edit)
+
+    p = subparsers.add_parser('remove',
+                              help=_('remove an existing preset'))
+    p.add_argument('preset',
+                   metavar=_('NAME'),
+                   help=_('preset to remove'))
+    p.add_argument('-f', '--force',
+                   action='store_true',
+                   help=_('do not prompt user for confirmation'))
+    p.set_defaults(func=parse_cmd_remove)
 
     args = parser.parse_args()
 
