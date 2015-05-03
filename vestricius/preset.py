@@ -20,8 +20,8 @@
 
 
 """
-   vestricius.presets
-   ``````````````````
+   vestricius.preset
+   `````````````````
 
    Preset management
 
