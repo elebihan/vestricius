@@ -1,3 +1,4 @@
 vestricius/cli.py
 vestricius/utils.py
 vestricius/preset.py
+vestricius/plugin.py

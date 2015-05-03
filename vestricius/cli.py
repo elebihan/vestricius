@@ -21,6 +21,7 @@
 import argparse
 from vestricius import __version__
 from vestricius.preset import PresetManager
+from vestricius.plugin import PluginManager
 from vestricius.utils import setup_i18n
 from vestricius.log import setup_logging
 from gettext import gettext as _
@@ -30,11 +31,19 @@ setup_i18n()
 setup_logging()
 
 
+def print_items(items):
+    for item in items:
+        print(item.name)
+
+
 def parse_cmd_list(args):
     if args.object == 'presets':
         manager = PresetManager()
-        for preset in manager.presets:
-            print(preset.name)
+        items = manager.presets
+    elif args.object == 'plugins':
+        manager = PluginManager()
+        items = manager.plugins
+    print_items(items)
 
 
 def parse_cmd_new(args):
@@ -69,17 +78,17 @@ def main():
                         version=__version__)
     subparsers = parser.add_subparsers(dest='command')
     p = subparsers.add_parser('list',
-                              help=_('list available modules or presets'))
+                              help=_('list available plugins or presets'))
     p.add_argument('object',
-                   choices=('modules', 'presets'),
+                   choices=('plugins', 'presets'),
                    help=_('objects to list'))
     p.set_defaults(func=parse_cmd_list)
 
     p = subparsers.add_parser('new',
-                              help=_('create a new preset for a module'))
-    p.add_argument('module',
+                              help=_('create a new preset for a plugin'))
+    p.add_argument('plugin',
                    metavar=_('NAME'),
-                   help=_('module to use'))
+                   help=_('plugin to use'))
     p.add_argument('preset',
                    metavar=_('NAME'),
                    help=_('name of the new preset'))

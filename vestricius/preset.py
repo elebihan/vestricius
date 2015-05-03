@@ -33,6 +33,7 @@ import os
 from configparser import ConfigParser
 from subprocess import check_call
 from gettext import gettext as _
+from .plugin import PluginManager
 
 
 def _load_presets(path):
@@ -68,26 +69,30 @@ class PresetManager:
         """List of presets"""
         return self._presets
 
-    def create(self, module, name):
-        """Create a new preset for a module.
+    def create(self, plugin_name, preset_name):
+        """Create a new preset for a plugin.
 
-        @param module: name of the module
-        @type module: str
+        @param plugin_name: name of the plugin
+        @type plugin_name: str
 
-        @param name: name of the new preset
-        @type name: str
+        @param preset_name: name of the new preset
+        @type preset_name: str
         """
         preset = None
         try:
-            preset = self.lookup_by_name(name)
+            preset = self.lookup_by_name(preset_name)
         except:
             pass
         if preset:
             raise RuntimeError(_("preset already exists"))
 
-        fn = os.path.join(self._presets_dir, name + '.conf')
-        check_call([self._editor, fn])
-        preset = Preset(fn)
+        plugin_mgr = PluginManager()
+        plugin = plugin_mgr.lookup_by_name(plugin_name)
+
+        fn = os.path.join(self._presets_dir, preset_name + '.conf')
+        preset = plugin.create_preset(preset_name, fn)
+
+        check_call([self._editor, preset.path])
         self._presets.append(preset)
 
     def edit(self, name):
@@ -120,7 +125,7 @@ class PresetManager:
         os.unlink(preset.path)
 
 class Preset:
-    """Holds the pre-defined configuration of a module.
+    """Holds the pre-defined configuration of a plugin.
 
     @param path: path to the preset configuration file
     @type path: str
@@ -131,15 +136,15 @@ class Preset:
         with open(path) as f:
             parser.read_file(f)
         self._name = parser.get('Preset', 'Name')
-        self._module = None
+        self._plugin = None
 
     @property
     def name(self):
         return self._name
 
     @property
-    def module(self):
-        return self._module
+    def plugin(self):
+        return self._plugin
 
     @property
     def path(self):
