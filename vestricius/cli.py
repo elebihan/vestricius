@@ -46,9 +46,9 @@ def parse_cmd_list(args):
     print_items(items)
 
 
-def parse_cmd_new(args):
+def parse_cmd_add(args):
     manager = PresetManager()
-    manager.create(None, args.preset)
+    manager.create(args.plugin, args.preset)
 
 
 def parse_cmd_edit(args):
@@ -84,15 +84,15 @@ def main():
                    help=_('objects to list'))
     p.set_defaults(func=parse_cmd_list)
 
-    p = subparsers.add_parser('new',
-                              help=_('create a new preset for a plugin'))
+    p = subparsers.add_parser('add',
+                              help=_('add a new preset for a plugin'))
     p.add_argument('plugin',
-                   metavar=_('NAME'),
+                   metavar=_('PLUGIN'),
                    help=_('plugin to use'))
     p.add_argument('preset',
-                   metavar=_('NAME'),
+                   metavar=_('PRESET'),
                    help=_('name of the new preset'))
-    p.set_defaults(func=parse_cmd_new)
+    p.set_defaults(func=parse_cmd_add)
 
     p = subparsers.add_parser('edit',
                               help=_('edit an existing preset'))
