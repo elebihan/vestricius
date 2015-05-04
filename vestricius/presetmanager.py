@@ -32,37 +32,46 @@
 import os
 from subprocess import check_call
 from gettext import gettext as _
+from .log import debug
 from .pluginmanager import PluginManager
 from .preset import Preset
 
 
-def _load_presets(path):
-    """Loads presets
-
-    @param path: path to the presets directory
-    @type path: str
-
-    @returns: list of presets
-    """
-    presets = []
-    for entry in os.listdir(path):
-        fn = os.path.join(path, entry)
-        if fn.endswith('.conf'):
-            presets.append(Preset(fn))
-    return presets
-
-
 class PresetManager:
-    """Manages presets"""
-    def __init__(self):
+    """Manages preset
+
+    @param scan: if True, scan search paths for presets
+    @type scan: bool
+    """
+    def __init__(self, scan=True):
         self._editor = os.environ.get('$EDITOR', 'vi')
-        self._presets_dir = os.path.expanduser('~/.config/vestricius.d')
-        if not os.path.exists(self._presets_dir):
-            os.makedirs(self._presets_dir)
-            presets = []
-        else:
-            presets = _load_presets(self._presets_dir)
-        self._presets = presets
+        self._default_dir = os.path.expanduser('~/.config/vestricius.d')
+        if not os.path.exists(self._default_dir):
+            os.makedirs(self._default_dir)
+        self._search_paths = [self._default_dir]
+        self._presets = []
+        if scan:
+            self.scan_presets()
+
+    def add_search_path(self, path):
+        """Adds a new path for searching presets.
+
+        @param path: path where to look for new presets
+        @type path: str
+        """
+        self._search_paths.append(path)
+
+    def scan_presets(self):
+        """Scan all known search paths for presets"""
+        self._presets = []
+        for path in self._search_paths:
+            debug(_("Searching for presets in {}").format(path))
+            for entry in os.listdir(path):
+                fn = os.path.join(path, entry)
+                if fn.endswith('.conf'):
+                    preset = Preset(fn)
+                    debug(_("Found preset '{}'").format(preset.name))
+                    self._presets.append(preset)
 
     @property
     def presets(self):
@@ -89,7 +98,7 @@ class PresetManager:
         plugin_mgr = PluginManager()
         plugin = plugin_mgr.lookup_by_name(plugin_name)
 
-        fn = os.path.join(self._presets_dir, preset_name + '.conf')
+        fn = os.path.join(self._default_dir, preset_name + '.conf')
         preset = plugin.create_preset(preset_name, fn)
 
         check_call([self._editor, preset.path])
