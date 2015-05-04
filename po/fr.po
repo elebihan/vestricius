@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vestricius\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-04 17:10+0200\n"
+"POT-Creation-Date: 2015-05-04 19:53+0200\n"
 "PO-Revision-Date: 2015-05-03 15:57+0200\n"
 "Last-Translator: Eric Le Bihan <eric.le.bihan.dev@free.fr>\n"
 "Language-Team: French <traduc@traduc.org>\n"
@@ -17,79 +17,95 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: vestricius/cli.py:63
-msgid "Do you REALLY want to delete the preset '{}' [y/N]? "
-msgstr "Voulez-vous VRAIMENT effacer le réglage '{}' [o/N]? "
+#: vestricius/cli.py:51
+msgid "PATH"
+msgstr "CHEMIN"
 
-#: vestricius/cli.py:65
-msgid "y"
-msgstr "o"
+#: vestricius/cli.py:54
+msgid "set plugins search path"
+msgstr "définit un chemin de recherche des extensions"
 
-#: vestricius/cli.py:71
-msgid "Deleted '{}'"
-msgstr "'{} a été effacé"
-
-#: vestricius/cli.py:81
+#: vestricius/cli.py:58
 msgid "list available plugins or presets"
 msgstr "liste les extensions ou réglages disponibles"
 
-#: vestricius/cli.py:84
+#: vestricius/cli.py:61
 msgid "objects to list"
 msgstr "objets à lister"
 
-#: vestricius/cli.py:88
+#: vestricius/cli.py:65
 msgid "add a new preset for a plugin"
 msgstr "ajoute un nouveau réglage pour une extension"
 
-#: vestricius/cli.py:90
+#: vestricius/cli.py:67
 msgid "PLUGIN"
 msgstr "EXTENSION"
 
-#: vestricius/cli.py:91
+#: vestricius/cli.py:68
 msgid "plugin to use"
 msgstr "extension à utiliser"
 
-#: vestricius/cli.py:93
+#: vestricius/cli.py:70
 msgid "PRESET"
 msgstr "RÉGLAGE"
 
-#: vestricius/cli.py:94
+#: vestricius/cli.py:71
 msgid "name of the new preset"
 msgstr "nom du nouveau réglage"
 
-#: vestricius/cli.py:98
+#: vestricius/cli.py:75
 msgid "edit an existing preset"
 msgstr "édite un réglage existant"
 
-#: vestricius/cli.py:100 vestricius/cli.py:107
+#: vestricius/cli.py:77 vestricius/cli.py:84
 msgid "NAME"
 msgstr "NOM"
 
-#: vestricius/cli.py:101
+#: vestricius/cli.py:78
 msgid "preset to edit"
 msgstr "réglage à éditer"
 
-#: vestricius/cli.py:105
+#: vestricius/cli.py:82
 msgid "remove an existing preset"
 msgstr "enlève un réglage existant"
 
-#: vestricius/cli.py:108
+#: vestricius/cli.py:85
 msgid "preset to remove"
 msgstr "réglage à enlever"
 
-#: vestricius/cli.py:111
+#: vestricius/cli.py:88
 msgid "do not prompt user for confirmation"
 msgstr "ne demande pas de confirmation à l'utilisateur"
 
-#: vestricius/cli.py:117
+#: vestricius/cli.py:107
+msgid "Do you REALLY want to delete the preset '{}' [y/N]? "
+msgstr "Voulez-vous VRAIMENT effacer le réglage '{}' [o/N]? "
+
+#: vestricius/cli.py:109
+msgid "y"
+msgstr "o"
+
+#: vestricius/cli.py:115
+msgid "Deleted '{}'"
+msgstr "'{} a été effacé"
+
+#: vestricius/cli.py:126
 msgid "Missing command"
 msgstr "Commande absente"
 
-#: vestricius/presetmanager.py:87
+#: vestricius/presetmanager.py:68
+msgid "Searching for presets in {}"
+msgstr "Recherche de réglages dans {}"
+
+#: vestricius/presetmanager.py:73
+msgid "Found preset '{}'"
+msgstr "Le réglage '{}' a été trouvé"
+
+#: vestricius/presetmanager.py:96
 msgid "preset already exists"
 msgstr "le réglage existe déjà"
 
-#: vestricius/presetmanager.py:116
+#: vestricius/presetmanager.py:125
 msgid "preset not found"
 msgstr "réglage introuvable"
 
