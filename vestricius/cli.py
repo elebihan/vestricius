@@ -36,86 +36,88 @@ def print_items(items):
         print(item.name)
 
 
-def parse_cmd_list(args):
-    if args.object == 'presets':
-        manager = PresetManager()
-        items = manager.presets
-    elif args.object == 'plugins':
-        manager = PluginManager()
-        items = manager.plugins
-    print_items(items)
+class Application:
+    """Command line Application"""
+    def __init__(self):
+        self._preset_mgr = PresetManager()
+        self._plugin_mgr = PluginManager()
 
+        self._parser = argparse.ArgumentParser()
+        self._parser.add_argument('-v', '--version',
+                                  action='version',
+                                  version=__version__)
+        subparsers = self._parser.add_subparsers(dest='command')
+        p = subparsers.add_parser('list',
+                                  help=_('list available plugins or presets'))
+        p.add_argument('object',
+                       choices=('plugins', 'presets'),
+                       help=_('objects to list'))
+        p.set_defaults(func=self._parse_cmd_list)
 
-def parse_cmd_add(args):
-    manager = PresetManager()
-    manager.create(args.plugin, args.preset)
+        p = subparsers.add_parser('add',
+                                  help=_('add a new preset for a plugin'))
+        p.add_argument('plugin',
+                       metavar=_('PLUGIN'),
+                       help=_('plugin to use'))
+        p.add_argument('preset',
+                       metavar=_('PRESET'),
+                       help=_('name of the new preset'))
+        p.set_defaults(func=self._parse_cmd_add)
 
+        p = subparsers.add_parser('edit',
+                                  help=_('edit an existing preset'))
+        p.add_argument('preset',
+                       metavar=_('NAME'),
+                       help=_('preset to edit'))
+        p.set_defaults(func=self._parse_cmd_edit)
 
-def parse_cmd_edit(args):
-    manager = PresetManager()
-    manager.edit(args.preset)
+        p = subparsers.add_parser('remove',
+                                  help=_('remove an existing preset'))
+        p.add_argument('preset',
+                       metavar=_('NAME'),
+                       help=_('preset to remove'))
+        p.add_argument('-f', '--force',
+                       action='store_true',
+                       help=_('do not prompt user for confirmation'))
+        p.set_defaults(func=self._parse_cmd_remove)
 
+    def _parse_cmd_list(self, args):
+        if args.object == 'presets':
+            items = self._preset_mgr.presets
+        elif args.object == 'plugins':
+            items = self._plugin_mgr.plugins
+        print_items(items)
 
-def parse_cmd_remove(args):
-    must_remove = False
-    manager = PresetManager()
-    if not args.force:
-        prompt = _("Do you REALLY want to delete the preset '{}' [y/N]? ")
-        value = input(prompt.format(args.preset))
-        if value.lower() == _('y'):
+    def _parse_cmd_add(self, args):
+        self._preset_mgr.create(args.plugin, args.preset)
+
+    def _parse_cmd_edit(self, args):
+        self._preset_mgr.edit(args.preset)
+
+    def _parse_cmd_remove(self, args):
+        must_remove = False
+        if not args.force:
+            prompt = _("Do you REALLY want to delete the preset '{}' [y/N]? ")
+            value = input(prompt.format(args.preset))
+            if value.lower() == _('y'):
+                must_remove = True
+        else:
             must_remove = True
-    else:
-        must_remove = True
-    if must_remove:
-        manager.remove(args.preset)
-        print(_("Deleted '{}'").format(args.preset))
+        if must_remove:
+            self._preset_mgr.remove(args.preset)
+            print(_("Deleted '{}'").format(args.preset))
+
+    def run(self):
+        args = self._parser.parse_args()
+
+        if not hasattr(args, 'func'):
+            parser.error(_('Missing command'))
+        else:
+            args.func(args)
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-v', '--version',
-                        action='version',
-                        version=__version__)
-    subparsers = parser.add_subparsers(dest='command')
-    p = subparsers.add_parser('list',
-                              help=_('list available plugins or presets'))
-    p.add_argument('object',
-                   choices=('plugins', 'presets'),
-                   help=_('objects to list'))
-    p.set_defaults(func=parse_cmd_list)
-
-    p = subparsers.add_parser('add',
-                              help=_('add a new preset for a plugin'))
-    p.add_argument('plugin',
-                   metavar=_('PLUGIN'),
-                   help=_('plugin to use'))
-    p.add_argument('preset',
-                   metavar=_('PRESET'),
-                   help=_('name of the new preset'))
-    p.set_defaults(func=parse_cmd_add)
-
-    p = subparsers.add_parser('edit',
-                              help=_('edit an existing preset'))
-    p.add_argument('preset',
-                   metavar=_('NAME'),
-                   help=_('preset to edit'))
-    p.set_defaults(func=parse_cmd_edit)
-
-    p = subparsers.add_parser('remove',
-                              help=_('remove an existing preset'))
-    p.add_argument('preset',
-                   metavar=_('NAME'),
-                   help=_('preset to remove'))
-    p.add_argument('-f', '--force',
-                   action='store_true',
-                   help=_('do not prompt user for confirmation'))
-    p.set_defaults(func=parse_cmd_remove)
-
-    args = parser.parse_args()
-
-    if not hasattr(args, 'func'):
-        parser.error(_('Missing command'))
-    else:
-        args.func(args)
+    app = Application()
+    app.run()
 
 # vim: ts=4 sw=4 sts=4 et ai
