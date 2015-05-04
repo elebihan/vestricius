@@ -20,10 +20,10 @@
 
 
 """
-   vestricius.plugins.simple
-   `````````````````````````
+   vestricius.plugins.test
+   ```````````````````````
 
-   Simple plugin
+   Simple Test plugin
 
    :copyright: (C) 2015 Eric Le Bihan <eric.le.bihan.dev@free.fr>
    :license: GPLv3+
@@ -32,9 +32,9 @@
 from vestricius.plugin import Plugin
 
 
-class SimplePlugin(Plugin):
-    """Plugin to handle simple crash archive"""
+class TestPlugin(Plugin):
+    """Test Plugin"""
     def __init__(self):
-        self._name = 'simple'
+        self._name = 'test'
 
 # vim: ts=4 sw=4 sts=4 et ai
