@@ -111,7 +111,7 @@ class Application:
         args = self._parser.parse_args()
 
         if not hasattr(args, 'func'):
-            parser.error(_('Missing command'))
+            self._parser.error(_('Missing command'))
         else:
             args.func(args)
 
