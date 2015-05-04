@@ -40,12 +40,19 @@ class Application:
     """Command line Application"""
     def __init__(self):
         self._preset_mgr = PresetManager()
-        self._plugin_mgr = PluginManager()
+        self._plugin_mgr = PluginManager(False)
 
         self._parser = argparse.ArgumentParser()
         self._parser.add_argument('-v', '--version',
                                   action='version',
                                   version=__version__)
+        self._parser.add_argument('-P', '--plugins-path',
+                                  action='append',
+                                  metavar=_('PATH'),
+                                  dest='plugins_paths',
+                                  default=[],
+                                  help=_("set plugins search path"))
+
         subparsers = self._parser.add_subparsers(dest='command')
         p = subparsers.add_parser('list',
                                   help=_('list available plugins or presets'))
@@ -109,6 +116,11 @@ class Application:
 
     def run(self):
         args = self._parser.parse_args()
+
+        for path in args.plugins_paths:
+            self._plugin_mgr.add_search_path(path)
+
+        self._plugin_mgr.scan_plugins()
 
         if not hasattr(args, 'func'):
             self._parser.error(_('Missing command'))
