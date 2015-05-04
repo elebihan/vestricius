@@ -20,8 +20,8 @@
 
 import argparse
 from vestricius import __version__
-from vestricius.plugin import PluginManager
 from vestricius.presetmanager import PresetManager
+from vestricius.pluginmanager import PluginManager
 from vestricius.utils import setup_i18n
 from vestricius.log import setup_logging
 from gettext import gettext as _
