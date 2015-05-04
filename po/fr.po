@@ -1,0 +1,106 @@
+# French translations for vestricius package.
+# Copyright (C) 2015 THE vestricius'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the vestricius package.
+# Eric Le Bihan <eric.le.bihan.dev@free.fr>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: vestricius\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-05-04 17:10+0200\n"
+"PO-Revision-Date: 2015-05-03 15:57+0200\n"
+"Last-Translator: Eric Le Bihan <eric.le.bihan.dev@free.fr>\n"
+"Language-Team: French <traduc@traduc.org>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: vestricius/cli.py:63
+msgid "Do you REALLY want to delete the preset '{}' [y/N]? "
+msgstr "Voulez-vous VRAIMENT effacer le réglage '{}' [o/N]? "
+
+#: vestricius/cli.py:65
+msgid "y"
+msgstr "o"
+
+#: vestricius/cli.py:71
+msgid "Deleted '{}'"
+msgstr "'{} a été effacé"
+
+#: vestricius/cli.py:81
+msgid "list available plugins or presets"
+msgstr "liste les extensions ou réglages disponibles"
+
+#: vestricius/cli.py:84
+msgid "objects to list"
+msgstr "objets à lister"
+
+#: vestricius/cli.py:88
+msgid "add a new preset for a plugin"
+msgstr "ajoute un nouveau réglage pour une extension"
+
+#: vestricius/cli.py:90
+msgid "PLUGIN"
+msgstr "EXTENSION"
+
+#: vestricius/cli.py:91
+msgid "plugin to use"
+msgstr "extension à utiliser"
+
+#: vestricius/cli.py:93
+msgid "PRESET"
+msgstr "RÉGLAGE"
+
+#: vestricius/cli.py:94
+msgid "name of the new preset"
+msgstr "nom du nouveau réglage"
+
+#: vestricius/cli.py:98
+msgid "edit an existing preset"
+msgstr "édite un réglage existant"
+
+#: vestricius/cli.py:100 vestricius/cli.py:107
+msgid "NAME"
+msgstr "NOM"
+
+#: vestricius/cli.py:101
+msgid "preset to edit"
+msgstr "réglage à éditer"
+
+#: vestricius/cli.py:105
+msgid "remove an existing preset"
+msgstr "enlève un réglage existant"
+
+#: vestricius/cli.py:108
+msgid "preset to remove"
+msgstr "réglage à enlever"
+
+#: vestricius/cli.py:111
+msgid "do not prompt user for confirmation"
+msgstr "ne demande pas de confirmation à l'utilisateur"
+
+#: vestricius/cli.py:117
+msgid "Missing command"
+msgstr "Commande absente"
+
+#: vestricius/presetmanager.py:87
+msgid "preset already exists"
+msgstr "le réglage existe déjà"
+
+#: vestricius/presetmanager.py:116
+msgid "preset not found"
+msgstr "réglage introuvable"
+
+#: vestricius/pluginmanager.py:88
+msgid "Searching for plugins in {}"
+msgstr "Recherche d'extensions dans {}"
+
+#: vestricius/pluginmanager.py:91
+msgid "Found plugin '{}'"
+msgstr "L'extension '{}' a été trouvée"
+
+#: vestricius/pluginmanager.py:108
+msgid "plugin not found"
+msgstr "extension introuvable"
