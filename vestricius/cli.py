@@ -40,7 +40,7 @@ class Application:
     """Command line Application"""
     def __init__(self):
         self._preset_mgr = PresetManager()
-        self._plugin_mgr = PluginManager(False)
+        self._plugin_mgr = PluginManager()
 
         self._parser = argparse.ArgumentParser()
         self._parser.add_argument('-v', '--version',
@@ -121,6 +121,7 @@ class Application:
             self._plugin_mgr.add_search_path(path)
 
         self._plugin_mgr.scan_plugins()
+        self._preset_mgr.scan_presets()
 
         if not hasattr(args, 'func'):
             self._parser.error(_('Missing command'))
