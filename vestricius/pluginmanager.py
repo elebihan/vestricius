@@ -102,6 +102,7 @@ class PluginManager:
         @param name: name of the plugin
         @type name: str
         """
+        debug(_("Looking for plugin '{}'").format(name))
         for plugin in self._plugins:
             if plugin.name == name:
                 return plugin
