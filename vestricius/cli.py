@@ -25,7 +25,7 @@ from vestricius.config import Configuration
 from vestricius.presetmanager import PresetManager
 from vestricius.pluginmanager import PluginManager
 from vestricius.utils import setup_i18n
-from vestricius.log import setup_logging
+from vestricius.log import setup_logging, debug
 from gettext import gettext as _
 
 setup_i18n()
@@ -98,6 +98,16 @@ class Application:
                        help=_('do not prompt user for confirmation'))
         p.set_defaults(func=self._parse_cmd_remove)
 
+        p = subparsers.add_parser('inspect',
+                                  help=_('inspect a crash archive'))
+        p.add_argument('filename',
+                       metavar=_('FILE'),
+                       help=_('path to the crash archive'))
+        p.add_argument('-p', '--preset',
+                       metavar=_('PRESET'),
+                       help=_('name of the preset to use'))
+        p.set_defaults(func=self._parse_cmd_inspect)
+
     def _parse_cmd_list(self, args):
         if args.object == 'presets':
             items = self._preset_mgr.presets
@@ -124,6 +134,15 @@ class Application:
         if must_remove:
             self._preset_mgr.remove(args.preset)
             print(_("Deleted '{}'").format(args.preset))
+
+    def _parse_cmd_inspect(self, args):
+        preset_name = args.preset or self._config.default_preset
+        debug(_("Using preset '{}'").format(preset_name))
+        preset = self._preset_mgr.lookup_by_name(preset_name)
+        plugin = self._plugin_mgr.lookup_by_name(preset.plugin)
+        debug(_("Using plugin '{}'").format(plugin.name))
+        haruspex = plugin.create_haruspex(preset)
+        haruspex.inspect(args.filename)
 
     def run(self):
         args = self._parser.parse_args()
