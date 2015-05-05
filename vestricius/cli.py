@@ -18,8 +18,10 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
+import os
 import argparse
 from vestricius import __version__
+from vestricius.config import Configuration
 from vestricius.presetmanager import PresetManager
 from vestricius.pluginmanager import PluginManager
 from vestricius.utils import setup_i18n
@@ -41,6 +43,14 @@ class Application:
     def __init__(self):
         self._preset_mgr = PresetManager()
         self._plugin_mgr = PluginManager()
+        self._config = Configuration()
+
+        filename = os.path.expanduser('~/.config/vestricius.conf')
+        if os.path.exists(filename):
+            self._config.load_from_file(filename)
+
+        for path in self._config.plugins_paths:
+            self._plugin_mgr.add_search_path(path)
 
         self._parser = argparse.ArgumentParser()
         self._parser.add_argument('-v', '--version',
