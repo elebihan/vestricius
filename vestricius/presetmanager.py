@@ -33,7 +33,6 @@ import os
 from subprocess import check_call
 from gettext import gettext as _
 from .log import debug
-from .pluginmanager import PluginManager
 from .preset import Preset
 
 
@@ -78,11 +77,11 @@ class PresetManager:
         """List of presets"""
         return self._presets
 
-    def create(self, plugin_name, preset_name):
+    def create(self, plugin, preset_name):
         """Create a new preset for a plugin.
 
-        @param plugin_name: name of the plugin
-        @type plugin_name: str
+        @param plugin: plugin associated with the new preset
+        @type plugin: :class:`Plugin`
 
         @param preset_name: name of the new preset
         @type preset_name: str
@@ -94,9 +93,6 @@ class PresetManager:
             pass
         if preset:
             raise RuntimeError(_("preset already exists"))
-
-        plugin_mgr = PluginManager()
-        plugin = plugin_mgr.lookup_by_name(plugin_name)
 
         fn = os.path.join(self._default_dir, preset_name + '.conf')
         preset = plugin.create_preset(preset_name, fn)
