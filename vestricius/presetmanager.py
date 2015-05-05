@@ -43,7 +43,7 @@ class PresetManager:
     @param scan: if True, scan search paths for presets
     @type scan: bool
     """
-    def __init__(self, scan=True):
+    def __init__(self, scan=False):
         self._editor = os.environ.get('$EDITOR', 'vi')
         self._default_dir = os.path.expanduser('~/.config/vestricius.d')
         if not os.path.exists(self._default_dir):
