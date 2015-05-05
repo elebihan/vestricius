@@ -1,4 +1,6 @@
 vestricius/cli.py
+vestricius/config.py
+vestricius/haruspex.py
 vestricius/utils.py
 vestricius/preset.py
 vestricius/presetmanager.py
