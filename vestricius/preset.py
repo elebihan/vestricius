@@ -44,7 +44,7 @@ class Preset:
         with open(path) as f:
             parser.read_file(f)
         self._name = parser.get('Preset', 'Name')
-        self._plugin = None
+        self._plugin = parser.get('Preset', 'Plugin')
 
     @property
     def name(self):
