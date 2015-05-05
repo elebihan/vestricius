@@ -29,6 +29,7 @@
    :license: GPLv3+
 """
 
+import abc
 from .preset import Preset
 
 
@@ -39,14 +40,13 @@ Plugin = {plugin.name}
 
 
 class Plugin:
-    """Extension for Vestricius"""
-    def __init__(self):
-        self._name = 'unknown'
+    """Base abstract class for extension"""
+    __metaclass__ = abc.ABCMeta
 
-    @property
+    @abc.abstractproperty
     def name(self):
         """Name of the plugin"""
-        return self._name
+        return 'unknown'
 
     def create_preset(self, name, path):
         """Creates a new preset for the plugin.
@@ -58,10 +58,23 @@ class Plugin:
         @type path: str
 
         @returns: a preset
+        @rtype: :class:`Preset`
         """
         with open(path, 'w+') as f:
             text = _PRESET_TEMPLATE.format(name=name, plugin=self)
             f.write(text)
         return Preset(path)
+
+    @abc.abstractmethod
+    def create_haruspex(self, preset):
+        """Creates an haruspex, configured according to a preset.
+
+        @param preset: preset to use to configure the haruspex
+        @type preset: :class:`Preset`
+
+        @returns: a configured Haruspex
+        @rtype: :class:`Haruspex`
+        """
+        pass
 
 # vim: ts=4 sw=4 sts=4 et ai
