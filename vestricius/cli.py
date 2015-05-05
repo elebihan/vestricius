@@ -106,7 +106,8 @@ class Application:
         print_items(items)
 
     def _parse_cmd_add(self, args):
-        self._preset_mgr.create(args.plugin, args.preset)
+        plugin = self._plugin_mgr.lookup_by_name(args.plugin)
+        self._preset_mgr.create(plugin, args.preset)
 
     def _parse_cmd_edit(self, args):
         self._preset_mgr.edit(args.preset)
