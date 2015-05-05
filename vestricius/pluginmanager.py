@@ -65,7 +65,7 @@ class PluginManager:
     @param scan: if True, scan search paths for plugins
     @type scan: bool
     """
-    def __init__(self, scan=True):
+    def __init__(self, scan=False):
         path = os.path.dirname(os.path.abspath(__file__))
         plugin_dir = os.path.join(path, 'plugins')
         self._search_paths = [plugin_dir]
