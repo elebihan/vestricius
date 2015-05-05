@@ -30,11 +30,33 @@
 """
 
 from vestricius.plugin import Plugin
+from vestricius.haruspex import Haruspex
+from vestricius.log import info
+from gettext import gettext as _
 
 
 class TestPlugin(Plugin):
     """Test Plugin"""
     def __init__(self):
-        self._name = 'test'
+        pass
+
+    @property
+    def name(self):
+        return 'test'
+
+    def create_haruspex(self, preset):
+        return TestHaruspex()
+
+
+class TestHaruspex(Haruspex):
+    def __init__(self):
+        pass
+
+    def inspect(self, filename):
+        info(_("dummy inspection of {}").format(filename))
+
+    def divine(self):
+        info(_("dummy divination"))
+
 
 # vim: ts=4 sw=4 sts=4 et ai
