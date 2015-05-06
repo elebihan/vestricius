@@ -44,6 +44,10 @@ class TestPlugin(Plugin):
     def name(self):
         return 'test'
 
+    @property
+    def description(self):
+        return 'Dummy test plugin'
+
     def create_haruspex(self, preset):
         return TestHaruspex()
 
