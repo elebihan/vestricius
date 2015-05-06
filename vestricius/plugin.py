@@ -53,6 +53,11 @@ class Plugin:
         """Brief description of the plugin"""
         return 'unknown'
 
+    @abc.abstractproperty
+    def preset_text(self):
+        """Extra text to add to the preset file"""
+        return ''
+
     def create_preset(self, name, path):
         """Creates a new preset for the plugin.
 
@@ -67,6 +72,7 @@ class Plugin:
         """
         with open(path, 'w+') as f:
             text = _PRESET_TEMPLATE.format(name=name, plugin=self)
+            text += self.preset_text
             f.write(text)
         return Preset(path)
 
