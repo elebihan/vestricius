@@ -48,6 +48,11 @@ class Plugin:
         """Name of the plugin"""
         return 'unknown'
 
+    @abc.abstractproperty
+    def description(self):
+        """Brief description of the plugin"""
+        return 'unknown'
+
     def create_preset(self, name, path):
         """Creates a new preset for the plugin.
 
