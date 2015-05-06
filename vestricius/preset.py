@@ -40,11 +40,11 @@ class Preset:
     """
     def __init__(self, path):
         self._path = path
-        parser = ConfigParser()
+        self._parser = ConfigParser()
         with open(path) as f:
-            parser.read_file(f)
-        self._name = parser.get('Preset', 'Name')
-        self._plugin = parser.get('Preset', 'Plugin')
+            self._parser.read_file(f)
+        self._name = self._parser.get('Preset', 'Name')
+        self._plugin = self._parser.get('Preset', 'Plugin')
 
     @property
     def name(self):
@@ -57,5 +57,36 @@ class Preset:
     @property
     def path(self):
         return self._path
+
+    def get(self, section, option):
+        """Gets an option value from the named section.
+
+        @param section: name of the section
+        @type section: str
+
+        @param option: name of the option
+        @type option: str
+
+        @return: the value of the option
+        @rtype: str
+        """
+        return self._parser.get(section, option)
+
+    def get_list(self, section, option):
+        """A convenience method which coerces the option in the specified
+        section to a list of strings.
+
+        @param section: name of the section
+        @type section: str
+
+        @param option: name of the option
+        @type option: str
+
+        @return: the value of option as a list of strings
+        @rtype: list
+        """
+        value = self._parser.get(section, option)
+        return [s.strip() for s in value.split(',')]
+
 
 # vim: ts=4 sw=4 sts=4 et ai
