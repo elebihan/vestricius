@@ -33,11 +33,6 @@ setup_i18n()
 setup_logging()
 
 
-def print_items(items):
-    for item in items:
-        print(item.name)
-
-
 class Application:
     """Command line Application"""
     def __init__(self):
@@ -66,6 +61,11 @@ class Application:
         subparsers = self._parser.add_subparsers(dest='command')
         p = subparsers.add_parser('list',
                                   help=_('list available plugins or presets'))
+        p.add_argument('-d', '--details',
+                       action='store_true',
+                       dest='with_details',
+                       default=False,
+                       help=_("show some details"))
         p.add_argument('object',
                        choices=('plugins', 'presets'),
                        help=_('objects to list'))
@@ -110,10 +110,19 @@ class Application:
 
     def _parse_cmd_list(self, args):
         if args.object == 'presets':
-            items = self._preset_mgr.presets
+            for preset in self._preset_mgr.presets:
+                if args.with_details:
+                    text = "{0.name:<24} -- {0.plugin:<48}"
+                else:
+                    text = "{0.name}"
+                print(text.format(preset))
         elif args.object == 'plugins':
-            items = self._plugin_mgr.plugins
-        print_items(items)
+            for plugin in self._plugin_mgr.plugins:
+                if args.with_details:
+                    text = "{0.name:<24} -- {0.description:<48}"
+                else:
+                    text = "{0.name}"
+                print(text.format(plugin))
 
     def _parse_cmd_add(self, args):
         plugin = self._plugin_mgr.lookup_by_name(args.plugin)
