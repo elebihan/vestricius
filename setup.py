@@ -38,6 +38,8 @@ setup(name='vestricius',
       keywords=[],
       install_requires=[
           'colorama>=0.3',
+          'filemagic>=1.6',
+          'pystache>=0.5.4',
       ],
       classifiers=[
           'Development Status :: 3 - Alpha',
