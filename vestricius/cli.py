@@ -25,7 +25,7 @@ from vestricius.config import Configuration
 from vestricius.presetmanager import PresetManager
 from vestricius.pluginmanager import PluginManager
 from vestricius.utils import setup_i18n
-from vestricius.log import setup_logging, debug
+from vestricius.log import setup_logging, debug, info
 from gettext import gettext as _
 
 setup_i18n()
@@ -100,6 +100,8 @@ class Application:
 
         p = subparsers.add_parser('inspect',
                                   help=_('inspect a crash archive'))
+        p.add_argument('-o', '--output',
+                       help=_('set output file name'))
         p.add_argument('filename',
                        metavar=_('FILE'),
                        help=_('path to the crash archive'))
@@ -152,7 +154,13 @@ class Application:
         debug(_("Using plugin '{}'").format(plugin.name))
         haruspex = plugin.create_haruspex(preset)
         report = haruspex.inspect(args.filename)
-        print(report.format_as_yaml())
+        text = report.format_as_yaml()
+        if args.output:
+            with open(args.output, 'w') as f:
+                f.write(text)
+            info(_("Generated report '{}'").format(args.output))
+        else:
+            print(text)
 
     def run(self):
         args = self._parser.parse_args()
