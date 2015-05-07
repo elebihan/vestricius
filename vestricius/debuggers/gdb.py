@@ -42,8 +42,8 @@ class GDBWrapper(Debugger):
         self.solib_paths = solib_paths
 
     def generate_backtrace(self, dumpfile, programfile):
-        info(_("Generating backtrace of {} using {}").format(programfile,
-                                                             dumpfile))
+        info(_("Generating backtrace for {} using {}").format(programfile,
+                                                              dumpfile))
         args = [
             self._exec, '-q',
             '-ex', 'set solib-search-path ' + ':'.join(self.solib_paths),
