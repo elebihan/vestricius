@@ -29,7 +29,7 @@
 """
 
 from .debugger import Debugger
-from ..log import info
+from ..log import info, debug
 from subprocess import check_output, STDOUT
 from gettext import gettext as _
 
@@ -54,7 +54,12 @@ class GDBWrapper(Debugger):
             '-ex', 'info threads',
             '-ex', 'quit'
         ]
+        debug(_("Executing '{}'").format(' '.join(args)))
         output = check_output(args, stderr=STDOUT)
         return output.decode('utf-8', errors='replace').splitlines()
+
+    @property
+    def path(self):
+        return self._exec
 
 # vim: ts=4 sw=4 sts=4 et ai
