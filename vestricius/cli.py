@@ -151,7 +151,8 @@ class Application:
         plugin = self._plugin_mgr.lookup_by_name(preset.plugin)
         debug(_("Using plugin '{}'").format(plugin.name))
         haruspex = plugin.create_haruspex(preset)
-        haruspex.inspect(args.filename)
+        report = haruspex.inspect(args.filename)
+        print(report.format_as_yaml())
 
     def run(self):
         args = self._parser.parse_args()
