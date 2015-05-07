@@ -47,4 +47,9 @@ class Debugger:
         """
         pass
 
+    @abc.abstractproperty
+    def path(self):
+        """Returns the absolute path to the debugger"""
+        pass
+
 # vim: ts=4 sw=4 sts=4 et ai
