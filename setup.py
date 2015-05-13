@@ -38,7 +38,7 @@ setup(name='vestricius',
       keywords=[],
       install_requires=[
           'colorama>=0.3',
-          'filemagic>=1.6',
+          'pyelftools>=0.23',
           'pystache>=0.5.4',
       ],
       classifiers=[
