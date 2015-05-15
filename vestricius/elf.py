@@ -33,6 +33,7 @@ from elftools.elf.segments import NoteSegment
 from elftools.common.utils import roundup, struct_parse
 from elftools.elf.structs import Enum, Struct, ULInt32, UBInt8
 from elftools.construct import CString, Pass, StaticField
+from collections import namedtuple
 from .common import InvalidFileError
 
 
@@ -43,6 +44,10 @@ _GNU_NOTE_TYPES = dict(NT_PRSTATUS=1,
                        NT_PLATFORM=5,
                        NT_AUXV=6,
                        _default_=Pass)
+
+
+ProcessInfo = namedtuple('ProcessInfo', ['name', 'args'])
+CoreDumpInfo = namedtuple('CoreDumpInfo', ['process_info'])
 
 
 def iter_notes(segment):
@@ -86,24 +91,27 @@ def parse_note(note):
     psinfo = prpsinfo.parse(note['n_desc'])
     fname = CString('').parse(psinfo['pr_fname']).decode('latin-1')
     psargs = CString('').parse(psinfo['pr_psargs']).decode('latin-1')
-    return (fname, psargs)
+    return ProcessInfo(fname, psargs)
 
 
-def extract_executable_path(dumpfile):
-    """Extracts executable path from core dump file
+def parse_core_dump_file(filename):
+    """Parses a core dump file.
 
-    @param dumpfile: path to the core dump file
-    @type dumpfile: str
+    @param filename: path to the core dump file
+    @type filename: str
+
+    @return: information from core dump
+    @rtype: :class:`CoreDumpInfo`
     """
-    with open(dumpfile, 'rb') as f:
+    with open(filename, 'rb') as f:
         elffile = ELFFile(f)
         for segment in elffile.iter_segments():
             if isinstance(segment, NoteSegment):
                 for note in iter_notes(segment):
                     if (note['n_name'] == 'CORE' and
                         note['n_type'] == 'NT_PRPSINFO'):
-                        fname, psargs = parse_note(note)
-                        return fname
+                        pi = parse_note(note)
+                        return CoreDumpInfo(process_info=pi)
     raise InvalidFileError
 
 # vim: ts=4 sw=4 sts=4 et ai
