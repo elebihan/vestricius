@@ -110,6 +110,18 @@ class Application:
                        help=_('name of the preset to use'))
         p.set_defaults(func=self._parse_cmd_inspect)
 
+        p = subparsers.add_parser('reveal',
+                                  help=_('fetch and inspect the latest available archive'))
+        p.add_argument('-o', '--output',
+                       help=_('set output file name'))
+        p.add_argument('-p', '--preset',
+                       metavar=_('PRESET'),
+                       help=_('name of the preset to use'))
+        p.add_argument('-P', '--pattern',
+                       metavar=_('EXPRESSION'),
+                       help=_('pattern of crash archive name'))
+        p.set_defaults(func=self._parse_cmd_reveal)
+
     def _parse_cmd_list(self, args):
         if args.object == 'presets':
             for preset in self._preset_mgr.presets:
@@ -149,6 +161,11 @@ class Application:
     def _parse_cmd_inspect(self, args):
         haruspex = self._create_haruspex(args.preset)
         report = haruspex.inspect(args.filename)
+        self._handle_report(report, args.output)
+
+    def _parse_cmd_reveal(self, args):
+        haruspex = self._create_haruspex(args.preset)
+        report = haruspex.reveal(args.pattern)
         self._handle_report(report, args.output)
 
     def _create_haruspex(self, preset_name):
