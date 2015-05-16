@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vestricius\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-16 17:29+0200\n"
+"POT-Creation-Date: 2015-05-16 17:39+0200\n"
 "PO-Revision-Date: 2015-05-03 15:57+0200\n"
 "Last-Translator: Eric Le Bihan <eric.le.bihan.dev@free.fr>\n"
 "Language-Team: French <traduc@traduc.org>\n"
@@ -17,129 +17,133 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: vestricius/cli.py:56
+#: vestricius/cli.py:58
 msgid "PATH"
 msgstr "CHEMIN"
 
-#: vestricius/cli.py:59
+#: vestricius/cli.py:61
 msgid "set plugins search path"
 msgstr "définit un chemin de recherche des extensions"
 
-#: vestricius/cli.py:63
+#: vestricius/cli.py:65
 msgid "list available plugins or presets"
 msgstr "liste les extensions ou réglages disponibles"
 
-#: vestricius/cli.py:68
+#: vestricius/cli.py:70
 msgid "show some details"
 msgstr "affiche des détails"
 
-#: vestricius/cli.py:71
+#: vestricius/cli.py:73
 msgid "objects to list"
 msgstr "objets à lister"
 
-#: vestricius/cli.py:75
+#: vestricius/cli.py:77
 msgid "add a new preset for a plugin"
 msgstr "ajoute un nouveau réglage pour une extension"
 
-#: vestricius/cli.py:77
+#: vestricius/cli.py:79
 msgid "PLUGIN"
 msgstr "EXTENSION"
 
-#: vestricius/cli.py:78
+#: vestricius/cli.py:80
 msgid "plugin to use"
 msgstr "extension à utiliser"
 
-#: vestricius/cli.py:80 vestricius/cli.py:109 vestricius/cli.py:118
+#: vestricius/cli.py:82 vestricius/cli.py:111 vestricius/cli.py:120
 msgid "PRESET"
 msgstr "RÉGLAGE"
 
-#: vestricius/cli.py:81
+#: vestricius/cli.py:83
 msgid "name of the new preset"
 msgstr "nom du nouveau réglage"
 
-#: vestricius/cli.py:85
+#: vestricius/cli.py:87
 msgid "edit an existing preset"
 msgstr "édite un réglage existant"
 
-#: vestricius/cli.py:87 vestricius/cli.py:94
+#: vestricius/cli.py:89 vestricius/cli.py:96
 msgid "NAME"
 msgstr "NOM"
 
-#: vestricius/cli.py:88
+#: vestricius/cli.py:90
 msgid "preset to edit"
 msgstr "réglage à éditer"
 
-#: vestricius/cli.py:92
+#: vestricius/cli.py:94
 msgid "remove an existing preset"
 msgstr "enlève un réglage existant"
 
-#: vestricius/cli.py:95
+#: vestricius/cli.py:97
 msgid "preset to remove"
 msgstr "réglage à enlever"
 
-#: vestricius/cli.py:98
+#: vestricius/cli.py:100
 msgid "do not prompt user for confirmation"
 msgstr "ne demande pas de confirmation à l'utilisateur"
 
-#: vestricius/cli.py:102
+#: vestricius/cli.py:104
 msgid "inspect a crash archive"
 msgstr "inspecte une archive de crash"
 
-#: vestricius/cli.py:104 vestricius/cli.py:116
+#: vestricius/cli.py:106 vestricius/cli.py:118
 msgid "set output file name"
 msgstr "définit le nom du fichier de sortie"
 
-#: vestricius/cli.py:106
+#: vestricius/cli.py:108
 msgid "FILE"
 msgstr "FICHIER"
 
-#: vestricius/cli.py:107
+#: vestricius/cli.py:109
 msgid "path to the crash archive"
 msgstr "chemin vers l'archive du crash"
 
-#: vestricius/cli.py:110 vestricius/cli.py:119
+#: vestricius/cli.py:112 vestricius/cli.py:121
 msgid "name of the preset to use"
 msgstr "nom du réglage à utiliser"
 
-#: vestricius/cli.py:114
+#: vestricius/cli.py:116
 msgid "fetch and inspect the latest available archive"
 msgstr "récupère et inspecte la dernière archive disponible"
 
-#: vestricius/cli.py:121
+#: vestricius/cli.py:123
 msgid "EXPRESSION"
 msgstr "EXPRESSION"
 
-#: vestricius/cli.py:122
+#: vestricius/cli.py:124
 msgid "pattern of crash archive name"
 msgstr "schéma du nom de l'archive du crash"
 
-#: vestricius/cli.py:151
+#: vestricius/cli.py:153
 msgid "Do you REALLY want to delete the preset '{}' [y/N]? "
 msgstr "Voulez-vous VRAIMENT effacer le réglage '{}' [o/N]? "
 
-#: vestricius/cli.py:153
+#: vestricius/cli.py:155
 msgid "y"
 msgstr "o"
 
-#: vestricius/cli.py:159
+#: vestricius/cli.py:161
 msgid "Deleted '{}'"
 msgstr "'{} a été effacé"
 
-#: vestricius/cli.py:173
+#: vestricius/cli.py:175
 msgid "Using preset '{}'"
 msgstr "Utilisation du réglage '{}'"
 
-#: vestricius/cli.py:176
+#: vestricius/cli.py:178
 msgid "Using plugin '{}'"
 msgstr "Utilisation de l'extension '{}'"
 
-#: vestricius/cli.py:184
+#: vestricius/cli.py:186
 msgid "Generated report '{}'"
 msgstr "Le rapport '{}' a été généré"
 
-#: vestricius/cli.py:198
+#: vestricius/cli.py:200
 msgid "Missing command"
 msgstr "Commande absente"
+
+#: vestricius/cli.py:209
+msgid "Command failed ({})"
+msgstr "La commande a échouée ()"
 
 #: vestricius/common.py:59
 msgid "can not find {}"
@@ -196,6 +200,10 @@ msgstr "Fichier de vidange système généré par '{}'"
 #: vestricius/plugins/simple.py:82
 msgid "Using {} as reference"
 msgstr "Utilisation de {} en tant que référence"
+
+#: vestricius/plugins/simple.py:92
+msgid "command not implemented"
+msgstr "commande non implementée"
 
 #: vestricius/plugins/test.py:60
 msgid "dummy inspection of {}"
