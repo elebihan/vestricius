@@ -48,7 +48,7 @@ class Haruspex:
         pass
 
     @abc.abstractmethod
-    def divine(self, pattern):
+    def reveal(self, pattern):
         """Fetches and inspects latest available crash archive
 
         @param pattern: pattern of the crash archive name
