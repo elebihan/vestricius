@@ -31,10 +31,13 @@
 from elftools.elf.elffile import ELFFile
 from elftools.elf.segments import NoteSegment
 from elftools.common.utils import roundup, struct_parse
-from elftools.elf.structs import Enum, Struct, ULInt32, UBInt8
+from elftools.elf.structs import Enum, Struct
+from elftools.elf.structs import ULInt64, ULInt32, ULInt16, UBInt8
 from elftools.construct import CString, Pass, StaticField
-from collections import namedtuple
+from collections import namedtuple, defaultdict
 from .common import InvalidFileError
+from .log import debug
+from gettext import gettext as _
 
 
 _GNU_NOTE_TYPES = dict(NT_PRSTATUS=1,
@@ -49,6 +52,55 @@ _GNU_NOTE_TYPES = dict(NT_PRSTATUS=1,
 ProcessInfo = namedtuple('ProcessInfo', ['name', 'args'])
 CoreDumpInfo = namedtuple('CoreDumpInfo', ['process_info'])
 
+_PRPSINFO_X86_64 = Struct('elf_psinfo',
+                          UBInt8('pr_state'),
+                          UBInt8('pr_sname'),
+                          UBInt8('pr_zomb'),
+                          UBInt8('pr_nice'),
+                          ULInt64('pr_flag'),
+                          ULInt32('gap'),
+                          ULInt32('pr_uid'),
+                          ULInt32('pr_gid'),
+                          ULInt32('pr_pid'),
+                          ULInt32('pr_ppid'),
+                          ULInt32('pr_pgrp'),
+                          ULInt32('pr_sid'),
+                          StaticField('pr_fname', 16),
+                          StaticField('pr_psargs', 80))
+
+_PRPSINFO_X86 = Struct('elf_psinfo',
+                       UBInt8('pr_state'),
+                       UBInt8('pr_sname'),
+                       UBInt8('pr_zomb'),
+                       UBInt8('pr_nice'),
+                       ULInt32('pr_flag'),
+                       ULInt16('pr_uid'),
+                       ULInt16('pr_gid'),
+                       ULInt32('pr_pid'),
+                       ULInt32('pr_ppid'),
+                       ULInt32('pr_pgrp'),
+                       ULInt32('pr_sid'),
+                       StaticField('pr_fname', 16),
+                       StaticField('pr_psargs', 80))
+
+_PRPSINFO_GEN = Struct('elf_psinfo',
+                       UBInt8('pr_state'),
+                       UBInt8('pr_sname'),
+                       UBInt8('pr_zomb'),
+                       UBInt8('pr_nice'),
+                       ULInt32('pr_flag'),
+                       ULInt32('pr_uid'),
+                       ULInt32('pr_gid'),
+                       ULInt32('pr_pid'),
+                       ULInt32('pr_ppid'),
+                       ULInt32('pr_pgrp'),
+                       ULInt32('pr_sid'),
+                       StaticField('pr_fname', 16),
+                       StaticField('pr_psargs', 80))
+
+_PRPSINFO = defaultdict(lambda: _PRPSINFO_GEN,
+                        [('x86', _PRPSINFO_X86),
+                         ('x64', _PRPSINFO_X86_64)])
 
 def iter_notes(segment):
     offset = segment['p_offset']
@@ -73,21 +125,8 @@ def iter_notes(segment):
         yield note
 
 
-def parse_note(note):
-    prpsinfo = Struct('elf_psinfo',
-                      UBInt8('pr_state'),
-                      UBInt8('pr_sname'),
-                      UBInt8('pr_zomb'),
-                      UBInt8('pr_nice'),
-                      ULInt32('pr_flag'),
-                      ULInt32('pr_uid'),
-                      ULInt32('pr_gid'),
-                      ULInt32('pr_pid'),
-                      ULInt32('pr_ppid'),
-                      ULInt32('pr_pgrp'),
-                      ULInt32('pr_sid'),
-                      StaticField('pr_fname', 16),
-                      StaticField('pr_psargs', 80))
+def parse_note(note, arch):
+    prpsinfo = _PRPSINFO[arch]
     psinfo = prpsinfo.parse(note['n_desc'])
     fname = CString('').parse(psinfo['pr_fname']).decode('latin-1')
     psargs = CString('').parse(psinfo['pr_psargs']).decode('latin-1')
@@ -105,12 +144,14 @@ def parse_core_dump_file(filename):
     """
     with open(filename, 'rb') as f:
         elffile = ELFFile(f)
+        arch = elffile.get_machine_arch()
+        debug(_("Machine architecture is '{}'").format(arch))
         for segment in elffile.iter_segments():
             if isinstance(segment, NoteSegment):
                 for note in iter_notes(segment):
                     if (note['n_name'] == 'CORE' and
                         note['n_type'] == 'NT_PRPSINFO'):
-                        pi = parse_note(note)
+                        pi = parse_note(note, arch)
                         return CoreDumpInfo(process_info=pi)
     raise InvalidFileError
 
