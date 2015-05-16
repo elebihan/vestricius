@@ -66,7 +66,7 @@ class WrappedCoreHaruspex(SimpleCoreHaruspex):
     def inspect(self, filename):
         workdir = self._extract(filename)
         dumpfile = self._find_core_dump(workdir)
-        info(_("Found '{}'").format(os.path.basename(dumpfile)))
+        info(_("Found cored ump file '{}'").format(os.path.basename(dumpfile)))
         report = SimpleCoreHaruspex.inspect(self, dumpfile)
         shutil.rmtree(workdir)
         return report
