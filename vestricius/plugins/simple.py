@@ -89,6 +89,6 @@ class SimpleCoreHaruspex(Haruspex):
         return report
 
     def reveal(self, pattern):
-        raise NotImplementedError()
+        raise NotImplementedError(_("command not implemented"))
 
 # vim: ts=4 sw=4 sts=4 et ai
