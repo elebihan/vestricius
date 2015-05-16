@@ -19,13 +19,15 @@
 #
 
 import os
+import sys
 import argparse
+import traceback
 from vestricius import __version__
 from vestricius.config import Configuration
 from vestricius.presetmanager import PresetManager
 from vestricius.pluginmanager import PluginManager
 from vestricius.utils import setup_i18n
-from vestricius.log import setup_logging, debug, info
+from vestricius.log import setup_logging, debug, info, error
 from gettext import gettext as _
 
 setup_i18n()
@@ -197,11 +199,21 @@ class Application:
         if not hasattr(args, 'func'):
             self._parser.error(_('Missing command'))
         else:
-            args.func(args)
+            try:
+                rc = 0
+                args.func(args)
+            except Exception as e:
+                if 'VESTRICIUS_SHOW_STACK_TRACES' in os.environ:
+                    traceback.print_exc()
+                else:
+                    error(_("Command failed ({})").format(e))
+                rc = 1
+            return rc
 
 
 def main():
     app = Application()
-    app.run()
+    rc = app.run()
+    sys.exit(rc)
 
 # vim: ts=4 sw=4 sts=4 et ai
