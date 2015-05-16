@@ -147,18 +147,24 @@ class Application:
             print(_("Deleted '{}'").format(args.preset))
 
     def _parse_cmd_inspect(self, args):
-        preset_name = args.preset or self._config.default_preset
-        debug(_("Using preset '{}'").format(preset_name))
-        preset = self._preset_mgr.lookup_by_name(preset_name)
+        haruspex = self._create_haruspex(args.preset)
+        report = haruspex.inspect(args.filename)
+        self._handle_report(report, args.output)
+
+    def _create_haruspex(self, preset_name):
+        name = preset_name or self._config.default_preset
+        debug(_("Using preset '{}'").format(name))
+        preset = self._preset_mgr.lookup_by_name(name)
         plugin = self._plugin_mgr.lookup_by_name(preset.plugin)
         debug(_("Using plugin '{}'").format(plugin.name))
-        haruspex = plugin.create_haruspex(preset)
-        report = haruspex.inspect(args.filename)
+        return plugin.create_haruspex(preset)
+
+    def _handle_report(self, report, output=None):
         text = report.format_as_yaml()
-        if args.output:
-            with open(args.output, 'w') as f:
+        if output:
+            with open(output, 'w') as f:
                 f.write(text)
-            info(_("Generated report '{}'").format(args.output))
+            info(_("Generated report '{}'").format(output))
         else:
             print(text)
 
