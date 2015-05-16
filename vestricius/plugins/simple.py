@@ -88,7 +88,7 @@ class SimpleCoreHaruspex(Haruspex):
         report.backtrace = lines
         return report
 
-    def divine(self):
+    def reveal(self, pattern):
         raise NotImplementedError()
 
 # vim: ts=4 sw=4 sts=4 et ai
