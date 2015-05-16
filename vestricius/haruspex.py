@@ -48,8 +48,12 @@ class Haruspex:
         pass
 
     @abc.abstractmethod
-    def divine(self):
-        """Fetches and inspects latest crash archive"""
+    def divine(self, pattern):
+        """Fetches and inspects latest available crash archive
+
+        @param pattern: pattern of the crash archive name
+        @type pattern: str
+        """
         pass
 
 # vim: ts=4 sw=4 sts=4 et ai
