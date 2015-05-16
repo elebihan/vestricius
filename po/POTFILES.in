@@ -10,5 +10,7 @@ vestricius/presetmanager.py
 vestricius/utils.py
 vestricius/debuggers/debugger.py
 vestricius/debuggers/gdb.py
+vestricius/fetchers/ftp.py
 vestricius/plugins/simple.py
 vestricius/plugins/test.py
+vestricius/plugins/wrapped.py
