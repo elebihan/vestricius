@@ -40,10 +40,12 @@ from vestricius.report import Report
 from gettext import gettext as _
 
 _PRESET_TEXT = """
-[Tools]
-Debugger = gdb
+[Debugger]
+Executable = gdb
 SearchPaths = /usr/lib
+SolibPrefix = /usr/lib
 """
+
 
 class SimpleCorePlugin(Plugin):
     """Plugin for simple core dump files"""
@@ -63,15 +65,16 @@ class SimpleCorePlugin(Plugin):
         return _PRESET_TEXT
 
     def create_haruspex(self, preset):
-        debugger = preset.get('Tools', 'Debugger')
-        paths = preset.get_list('Tools', 'SearchPaths')
+        executable = preset.get_path('Debugger', 'Executable')
+        paths = preset.get_list('Debugger', 'SearchPaths')
+        prefix = preset.get_path('Debugger', 'SolibPrefix', None)
         search_paths = [os.path.expanduser(p) for p in paths]
-        return SimpleCoreHaruspex(debugger, search_paths)
+        return SimpleCoreHaruspex(executable, search_paths, prefix)
 
 
 class SimpleCoreHaruspex(Haruspex):
-    def __init__(self, debugger, search_paths=[]):
-        self._debugger = GDBWrapper(debugger, search_paths)
+    def __init__(self, debugger, search_paths=[], prefix=None):
+        self._debugger = GDBWrapper(debugger, search_paths, prefix)
         self._search_paths = search_paths
 
     def inspect(self, filename):
