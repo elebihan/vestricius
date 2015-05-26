@@ -53,15 +53,16 @@ class WrappedCorePlugin(SimpleCorePlugin):
         return 'Plugin for core dump file wrapped in a tarball'
 
     def create_haruspex(self, preset):
-        debugger = preset.get('Tools', 'Debugger')
-        paths = preset.get_list('Tools', 'SearchPaths')
+        executable = preset.get_path('Debugger', 'Executable')
+        paths = preset.get_list('Debugger', 'SearchPaths')
+        prefix = preset.get_path('Debugger', 'SolibPrefix', None)
         search_paths = [os.path.expanduser(p) for p in paths]
-        return WrappedCoreHaruspex(debugger, search_paths)
+        return WrappedCoreHaruspex(executable, search_paths, prefix)
 
 
 class WrappedCoreHaruspex(SimpleCoreHaruspex):
-    def __init__(self, debugger, search_paths=[]):
-        SimpleCoreHaruspex.__init__(self, debugger, search_paths)
+    def __init__(self, debugger, search_paths=[], prefix=None):
+        SimpleCoreHaruspex.__init__(self, debugger, search_paths, prefix)
 
     def inspect(self, filename):
         workdir = self._extract(filename)
