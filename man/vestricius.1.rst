@@ -15,14 +15,15 @@ SYNOPSIS
 
 vestricius [OPTIONS] <command> [<argument>, ...]
 
-vestricius new <module> <preset>
+vestricius add <plugin> <preset>
 
-vestricius list <modules|presets>
+vestricius list <plugins|presets>
 
 vestricius edit <preset>
 
-DESCRIPTION
-===========
+vestricius inspect <filename>
+
+vestricius reveal
 
 Vestricius is an Haruspex, a priest who practiced divination by
 looking at the entrails of animals. `vestricius(1)` is a command line
@@ -31,7 +32,8 @@ tool which allows the user to get a backtrace from a core dump file.
 OPTIONS
 =======
 
--v, --version   display program version and exit
+-v, --version                    display program version and exit
+-P PATH, --plugins-path=PATH     set plugins search path
 
 COMMANDS
 ========
@@ -43,7 +45,7 @@ list [OPTIONS] <modules|presets>
 
 List the available modules or presets.
 
-new [OPTIONS] <module> <preset>
+add [OPTIONS] <module> <preset>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Create a new preset for an existing module.
@@ -52,3 +54,24 @@ edit [OPTIONS] <preset>
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Edit an existing preset.
+
+inspect [OPTIONS] <filename>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Inspect a crash archive.
+
+Available options:
+
+-p PRESET, --preset=PRESET    name of the preset to use
+-o FILE, --output=FILE        set output filename
+
+reveal [OPTIONS]
+~~~~~~~~~~~~~~~~
+
+Fetch and inspect the latest crash archive.
+
+Available options:
+
+-p PRESET, --preset=PRESET    name of the preset to use
+-o FILE, --output=FILE        set output filename
+-P EXPR, --pattern=EXPR       pattern of crash archive name
