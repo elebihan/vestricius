@@ -28,7 +28,7 @@
    :license: GPLv3+
 """
 
-from .debugger import Debugger
+from ..debugger import Debugger
 from ..log import info, debug
 from subprocess import check_output, STDOUT
 from gettext import gettext as _
