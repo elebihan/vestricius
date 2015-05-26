@@ -37,17 +37,22 @@ from gettext import gettext as _
 class GDBWrapper(Debugger):
     """Wraps the GNU debugger"""
 
-    def __init__(self, executable, solib_paths=[]):
+    def __init__(self, executable, solib_paths=[], solib_prefix=None):
         self._exec = executable
-        self.solib_paths = solib_paths
+        self._solib_paths = solib_paths
+        self._solib_prefix = solib_prefix
 
     def generate_backtrace(self, dumpfile, programfile):
         info(_("Generating backtrace for {} using {}").format(programfile,
                                                               dumpfile))
-        args = [
-            self._exec, '-q',
-            '-ex', 'set solib-search-path ' + ':'.join(self.solib_paths),
-            '-ex', 'set solib-absolute-prefix ' + ':'.join(self.solib_paths),
+        args = [self._exec, '-q']
+        if len(self._solib_paths):
+            args.append('-ex')
+            args.append('set solib-search-path ' + ':'.join(self._solib_paths))
+        if self._solib_prefix:
+            args.append('-ex')
+            args.append('set solib-absolute-prefix ' + self._solib_prefix)
+        args += [
             '-ex', 'file ' + programfile,
             '-ex', 'core-file ' + dumpfile,
             '-ex', 'backtrace',
