@@ -8,7 +8,7 @@ vestricius/pluginmanager.py
 vestricius/preset.py
 vestricius/presetmanager.py
 vestricius/utils.py
-vestricius/debuggers/debugger.py
+vestricius/debugger.py
 vestricius/debuggers/gdb.py
 vestricius/fetchers/ftp.py
 vestricius/plugins/simple.py
