@@ -29,6 +29,7 @@
    :license: GPLv3+
 """
 
+import os
 from configparser import ConfigParser
 
 
@@ -87,6 +88,27 @@ class Preset:
         """
         value = self._parser.get(section, option)
         return [s.strip() for s in value.split(',')]
+
+    def get_path(self, section, option, fallback=None):
+        """A convenience method which coerces the option in the specified
+        section to file system path.
+
+        @param section: name of the section
+        @type section: str
+
+        @param option: name of the option
+        @type option: str
+
+        @param fallback: value to return if the option is not found
+        @type fallback: any
+
+        @return: the value of the option
+        @rtype: str
+        """
+        value = self._parser.get(section, option, fallback=fallback)
+        if value:
+            value = os.path.expanduser(value)
+        return value
 
 
 # vim: ts=4 sw=4 sts=4 et ai
