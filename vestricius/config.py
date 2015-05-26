@@ -39,11 +39,11 @@ class Configuration:
         with open(filename) as f:
             parser.read_file(f)
         self.default_plugin = parser.get('General',
-                                        'DefaultPlugin',
-                                        fallback=None)
+                                         'DefaultPlugin',
+                                         fallback=None)
         self.default_preset = parser.get('General',
-                                        'DefaultPreset',
-                                        fallback=None)
+                                         'DefaultPreset',
+                                         fallback=None)
         value = parser.get('General', 'PluginsPaths', fallback=None)
         if value:
             self.plugins_paths += map(lambda p: os.path.expanduser(p.strip()),
