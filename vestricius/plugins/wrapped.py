@@ -39,6 +39,20 @@ from vestricius.log import info, debug
 from gettext import gettext as _
 
 
+_PRESET_TEXT = """
+[Debugger]
+Executable = gdb
+SearchPaths = /usr/lib
+SolibPrefix = /usr/lib
+
+[Repository]
+URL = ftp://username:password@someserver/somewhere/
+
+[Extra]
+CorePattern = ^core.+(?:\.gz)?
+"""
+
+
 class WrappedCorePlugin(SimpleCorePlugin):
     """Plugin for core dump file wrapped in a tarball"""
     def __init__(self):
@@ -57,12 +71,23 @@ class WrappedCorePlugin(SimpleCorePlugin):
         paths = preset.get_list('Debugger', 'SearchPaths')
         prefix = preset.get_path('Debugger', 'SolibPrefix', None)
         search_paths = [os.path.expanduser(p) for p in paths]
-        return WrappedCoreHaruspex(executable, search_paths, prefix)
+        repo_url = preset.get('Repository', 'URL')
+        pattern = preset.get('Extra', 'CorePattern', '^core.+(?:\.gz)?')
+        return WrappedCoreHaruspex(pattern,
+                                   executable,
+                                   search_paths,
+                                   prefix,
+                                   repo_url)
 
 
 class WrappedCoreHaruspex(SimpleCoreHaruspex):
-    def __init__(self, debugger, search_paths=[], prefix=None):
-        SimpleCoreHaruspex.__init__(self, debugger, search_paths, prefix)
+    def __init__(self, pattern, debugger, search_paths=[], prefix=None, repo_url=None):
+        SimpleCoreHaruspex.__init__(self,
+                                    debugger,
+                                    search_paths,
+                                    prefix,
+                                    repo_url)
+        self._core_pattern = pattern
 
     def inspect(self, filename):
         workdir = self._extract(filename)
@@ -83,7 +108,7 @@ class WrappedCoreHaruspex(SimpleCoreHaruspex):
     def _find_core_dump(self, workdir):
         for root, dirs, files in os.walk(workdir):
             for f in files:
-                if re.match(r'^core.+(?:\.gz)?', f):
+                if re.match(self._core_pattern, f):
                     return os.path.join(root, f)
 
 # vim: ts=4 sw=4 sts=4 et ai
