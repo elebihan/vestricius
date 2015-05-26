@@ -30,6 +30,7 @@
 """
 
 import os
+import tempfile
 from vestricius.plugin import Plugin
 from vestricius.haruspex import Haruspex
 from vestricius.log import info
@@ -37,6 +38,7 @@ from vestricius.elf import parse_core_dump_file
 from vestricius.common import find_executable
 from vestricius.debuggers.gdb import GDBWrapper
 from vestricius.report import Report
+from vestricius.fetchers.ftp import FtpFetcher
 from gettext import gettext as _
 
 _PRESET_TEXT = """
@@ -44,6 +46,9 @@ _PRESET_TEXT = """
 Executable = gdb
 SearchPaths = /usr/lib
 SolibPrefix = /usr/lib
+
+[Repository]
+URL = ftp://username:password@someserver/somewhere/
 """
 
 
@@ -69,13 +74,15 @@ class SimpleCorePlugin(Plugin):
         paths = preset.get_list('Debugger', 'SearchPaths')
         prefix = preset.get_path('Debugger', 'SolibPrefix', None)
         search_paths = [os.path.expanduser(p) for p in paths]
-        return SimpleCoreHaruspex(executable, search_paths, prefix)
+        repo_url = preset.get('Repository', 'URL')
+        return SimpleCoreHaruspex(executable, search_paths, prefix, repo_url)
 
 
 class SimpleCoreHaruspex(Haruspex):
-    def __init__(self, debugger, search_paths=[], prefix=None):
+    def __init__(self, debugger, search_paths=[], prefix=None, repo_url=None):
         self._debugger = GDBWrapper(debugger, search_paths, prefix)
         self._search_paths = search_paths
+        self._repo_url = repo_url
 
     def inspect(self, filename):
         core_info = parse_core_dump_file(filename)
@@ -92,6 +99,12 @@ class SimpleCoreHaruspex(Haruspex):
         return report
 
     def reveal(self, pattern):
-        raise NotImplementedError(_("command not implemented"))
+        if not self._repo_url:
+            raise RuntimeError(_("URL of repository not set in preset"))
+        fetcher = FtpFetcher(self._repo_url)
+        fn = fetcher.lookup(pattern)
+        info(_("Found '{}'").format(fn))
+        fn = fetcher.retrieve(fn, tempfile.gettempdir())
+        self.inspect(fn)
 
 # vim: ts=4 sw=4 sts=4 et ai
