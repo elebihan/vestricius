@@ -119,6 +119,6 @@ class SimpleCoreHaruspex(Haruspex):
         fn = fetcher.lookup(pattern)
         info(_("Found '{}'").format(fn))
         fn = fetcher.retrieve(fn, tempfile.gettempdir())
-        self.inspect(fn)
+        return self.inspect(fn)
 
 # vim: ts=4 sw=4 sts=4 et ai
