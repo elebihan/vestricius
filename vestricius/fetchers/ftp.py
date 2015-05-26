@@ -31,6 +31,7 @@
 import os
 import re
 from ftplib import FTP
+from urllib.parse import urlparse, urlunparse
 from ..common import ProgressReporter
 
 
@@ -47,9 +48,15 @@ class FtpFetcher:
     @type password: str
     """
     def __init__(self, url, username=None, password=None):
-        self._url = url
-        self._username = username
-        self._password = password
+        parsed_url = urlparse(url)
+        self._url = urlunparse((parsed_url.scheme,
+                                parsed_url.hostname,
+                                parsed_url.path,
+                                parsed_url.params,
+                                parsed_url.query,
+                                parsed_url.fragment))
+        self._username = parsed_url.username or username
+        self._password = parsed_url.password or password
 
     def lookup(self, pattern=None):
         print("Searching for crash archive at {}".format(self._url))
