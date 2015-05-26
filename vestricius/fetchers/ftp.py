@@ -32,7 +32,9 @@ import os
 import re
 from ftplib import FTP
 from urllib.parse import urlparse, urlunparse
-from ..common import ProgressReporter
+from ..log import info
+from ..common import ProgressReporter, FileNotFoundError
+from gettext import gettext as _
 
 
 class FtpFetcher:
@@ -59,7 +61,7 @@ class FtpFetcher:
         self._password = parsed_url.password or password
 
     def lookup(self, pattern=None):
-        print("Searching for crash archive at {}".format(self._url))
+        info(_("Searching for crash archive at {}").format(self._url))
         host, path = self._url.strip('ftp://').split('/', 1)
         with FTP(host) as ftp:
             files = []
@@ -71,7 +73,7 @@ class FtpFetcher:
             if len(files):
                 return files[0]
             else:
-                raise FileNotFoundError
+                raise FileNotFoundError(_("no file found"))
 
     def fetch(self, pattern=None, dest=os.getcwd(), callback=None):
         fn = self.lookup(pattern)
