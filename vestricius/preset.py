@@ -59,7 +59,7 @@ class Preset:
     def path(self):
         return self._path
 
-    def get(self, section, option):
+    def get(self, section, option, fallback=None):
         """Gets an option value from the named section.
 
         @param section: name of the section
@@ -68,10 +68,13 @@ class Preset:
         @param option: name of the option
         @type option: str
 
+        @param fallback: value to return if the option is not found
+        @type fallback: any
+
         @return: the value of the option
         @rtype: str
         """
-        return self._parser.get(section, option)
+        return self._parser.get(section, option, fallback=fallback)
 
     def get_list(self, section, option):
         """A convenience method which coerces the option in the specified
