@@ -116,8 +116,8 @@ class SimpleCoreHaruspex(Haruspex):
         if not self._repo_url:
             raise RuntimeError(_("URL of repository not set in preset"))
         fetcher = FtpFetcher(self._repo_url)
-        fn = fetcher.lookup(pattern)
-        info(_("Found '{}'").format(fn))
+        fn, date = fetcher.lookup(pattern)
+        info(_("Found '{}' ({})").format(fn, date))
         fn = fetcher.retrieve(fn, tempfile.gettempdir())
         return self.inspect(fn)
 

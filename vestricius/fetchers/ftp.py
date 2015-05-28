@@ -32,6 +32,7 @@ import os
 import re
 from ftplib import FTP
 from urllib.parse import urlparse, urlunparse
+from datetime import datetime
 from ..log import info
 from ..common import ProgressReporter, FileNotFoundError
 from gettext import gettext as _
@@ -71,7 +72,14 @@ class FtpFetcher:
             if pattern:
                 files = [f for f in files if re.search(pattern, f)]
             if len(files):
-                return files[0]
+                fn = files[0]
+                line = ftp.sendcmd("MDTM {}".format(fn))
+                code, timestamp = line.split()
+                if code == '213':
+                    date = datetime.strptime(timestamp, "%Y%m%d%H%M%S")
+                else:
+                    date = datetime.fromtimestamp(0)
+                return (fn, date.strftime("%Y-%m-%d %H:%M:%S"))
             else:
                 raise FileNotFoundError(_("no file found"))
 
