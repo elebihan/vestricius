@@ -38,6 +38,11 @@ class Haruspex:
     """
     __metaclass__ = abc.ABCMeta
 
+    @abc.abstractproperty
+    def name(self):
+        """Name of the Haruspex"""
+        pass
+
     @abc.abstractmethod
     def inspect(self, filename):
         """Inspects a crash archive.
