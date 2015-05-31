@@ -124,6 +124,16 @@ class Application:
                        help=_('pattern of crash archive name'))
         p.set_defaults(func=self._parse_cmd_reveal)
 
+        p = subparsers.add_parser('peek',
+                                  help=_('show information about the latest available archive'))
+        p.add_argument('-p', '--preset',
+                       metavar=_('PRESET'),
+                       help=_('name of the preset to use'))
+        p.add_argument('-P', '--pattern',
+                       metavar=_('EXPRESSION'),
+                       help=_('pattern of crash archive name'))
+        p.set_defaults(func=self._parse_cmd_peek)
+
     def _parse_cmd_list(self, args):
         if args.object == 'presets':
             for preset in self._preset_mgr.presets:
@@ -169,6 +179,11 @@ class Application:
         haruspex = self._create_haruspex(args.preset)
         report = haruspex.reveal(args.pattern)
         self._handle_report(report, args.output)
+
+    def _parse_cmd_peek(self, args):
+        haruspex = self._create_haruspex(args.preset)
+        filename, date = haruspex.peek(args.pattern)
+        print("{} {}".format(date, filename))
 
     def _create_haruspex(self, preset_name):
         name = preset_name or self._config.default_preset
