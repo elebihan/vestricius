@@ -56,4 +56,16 @@ class Haruspex:
         """
         pass
 
+    @abc.abstractmethod
+    def peek(self, pattern):
+        """Returns information about the latest available crash archive
+
+        @param pattern: pattern of the crash archive name
+        @type pattern: str
+
+        @return: filename and date of last modification
+        @rtype: (str, str)
+        """
+        pass
+
 # vim: ts=4 sw=4 sts=4 et ai
