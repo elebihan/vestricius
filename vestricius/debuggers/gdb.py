@@ -67,4 +67,12 @@ class GDBWrapper(Debugger):
     def path(self):
         return self._exec
 
+    @property
+    def solib_paths(self):
+        return self._solib_paths
+
+    @property
+    def solib_prefix(self):
+        return self._solib_prefix
+
 # vim: ts=4 sw=4 sts=4 et ai
