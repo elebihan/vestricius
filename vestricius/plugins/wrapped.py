@@ -52,6 +52,8 @@ URL = ftp://username:password@someserver/somewhere/
 CorePattern = ^core.+(?:\.gz)?
 """
 
+_NAME = 'wrapped-core'
+
 
 class WrappedCorePlugin(SimpleCorePlugin):
     """Plugin for core dump file wrapped in a tarball"""
@@ -60,7 +62,7 @@ class WrappedCorePlugin(SimpleCorePlugin):
 
     @property
     def name(self):
-        return 'wrapped-core'
+        return _NAME
 
     @property
     def description(self):
@@ -88,6 +90,10 @@ class WrappedCoreHaruspex(SimpleCoreHaruspex):
                                     prefix,
                                     repo_url)
         self._core_pattern = pattern
+
+    @property
+    def name(self):
+        return _NAME
 
     def inspect(self, filename):
         workdir = self._extract(filename)
