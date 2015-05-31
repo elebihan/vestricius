@@ -23,6 +23,8 @@ vestricius edit <preset>
 
 vestricius inspect <filename>
 
+vestricius peek
+
 vestricius reveal
 
 Vestricius is an Haruspex, a priest who practiced divination by
@@ -64,6 +66,16 @@ Available options:
 
 -p PRESET, --preset=PRESET    name of the preset to use
 -o FILE, --output=FILE        set output filename
+
+peek [OPTIONS]
+~~~~~~~~~~~~~~
+
+Show information about the latest crash archive
+
+Available options:
+
+-p PRESET, --preset=PRESET    name of the preset to use
+-P EXPR, --pattern=EXPR       pattern of crash archive name
 
 reveal [OPTIONS]
 ~~~~~~~~~~~~~~~~
