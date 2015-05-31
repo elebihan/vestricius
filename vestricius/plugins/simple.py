@@ -73,18 +73,22 @@ class SimpleCorePlugin(Plugin):
         return _PRESET_TEXT
 
     def create_haruspex(self, preset):
+        debugger = self._create_debugger(preset)
+        repo_url = preset.get('Repository', 'URL')
+        return SimpleCoreHaruspex(debugger, repo_url)
+
+    def _create_debugger(self, preset):
         executable = preset.get_path('Debugger', 'Executable')
         paths = preset.get_list('Debugger', 'SearchPaths')
         prefix = preset.get_path('Debugger', 'SolibPrefix', None)
         search_paths = [os.path.expanduser(p) for p in paths]
-        repo_url = preset.get('Repository', 'URL')
-        return SimpleCoreHaruspex(executable, search_paths, prefix, repo_url)
+        return GDBWrapper(executable, search_paths, prefix)
 
 
 class SimpleCoreHaruspex(Haruspex):
-    def __init__(self, debugger, search_paths=[], prefix=None, repo_url=None):
-        self._debugger = GDBWrapper(debugger, search_paths, prefix)
-        self._search_paths = search_paths
+    def __init__(self, debugger, repo_url=None):
+        self._debugger = debugger
+        self._search_paths = debugger.solib_paths
         self._repo_url = repo_url
 
     @property
