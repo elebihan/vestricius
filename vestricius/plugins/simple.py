@@ -113,12 +113,20 @@ class SimpleCoreHaruspex(Haruspex):
         return report
 
     def reveal(self, pattern):
-        if not self._repo_url:
-            raise RuntimeError(_("URL of repository not set in preset"))
-        fetcher = FtpFetcher(self._repo_url)
+        fetcher = self._create_fetcher()
         fn, date = fetcher.lookup(pattern)
         info(_("Found '{}' ({})").format(fn, date))
         fn = fetcher.retrieve(fn, tempfile.gettempdir())
         return self.inspect(fn)
+
+    def _create_fetcher(self):
+        if not self._repo_url:
+            raise RuntimeError(_("URL of repository not set in preset"))
+        return FtpFetcher(self._repo_url)
+
+    def peek(self, pattern):
+        fetcher = self._create_fetcher()
+        return fetcher.lookup(pattern)
+
 
 # vim: ts=4 sw=4 sts=4 et ai
