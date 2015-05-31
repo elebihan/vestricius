@@ -52,6 +52,8 @@ SolibPrefix = /usr/lib
 URL = ftp://username:password@someserver/somewhere/
 """
 
+_NAME = 'simple-core'
+
 
 class SimpleCorePlugin(Plugin):
     """Plugin for simple core dump files"""
@@ -60,7 +62,7 @@ class SimpleCorePlugin(Plugin):
 
     @property
     def name(self):
-        return 'simple-core'
+        return _NAME
 
     @property
     def description(self):
@@ -85,6 +87,10 @@ class SimpleCoreHaruspex(Haruspex):
         self._search_paths = search_paths
         self._repo_url = repo_url
 
+    @property
+    def name(self):
+        return _NAME
+
     def inspect(self, filename):
         if filename.endswith('.gz'):
             dst = tempfile.NamedTemporaryFile(prefix='vestricius-simple-', delete=False)
@@ -102,7 +108,7 @@ class SimpleCoreHaruspex(Haruspex):
         path = find_executable(executable, self._search_paths)
         info(_("Using {} as reference").format(path))
         lines = self._debugger.generate_backtrace(core_dump, path)
-        report = Report(filename, 'simple-core')
+        report = Report(filename, self.name)
         report.executable = executable
         report.coredump = core_dump
         report.debugger = self._debugger.path
