@@ -105,7 +105,9 @@ class SimpleCoreHaruspex(Haruspex):
         fn, date = fetcher.lookup(pattern)
         info(_("Found '{}' ({})").format(fn, date))
         fn = fetcher.retrieve(fn, tempfile.gettempdir())
-        return self.inspect(fn)
+        report = self.inspect(fn)
+        debug(_("Removing '{}'").format(fn))
+        return report
 
     def _create_fetcher(self):
         if not self._repo_url:
@@ -135,8 +137,8 @@ class SimpleCoreHaruspex(Haruspex):
         info(_("Using {} as reference").format(path))
         lines = self._debugger.generate_backtrace(core_dump, path)
         if need_cleanup:
-            debug(_("Removing '{}'").format(filename))
-            os.unlink(filename)
+            debug(_("Removing '{}'").format(core_dump))
+            os.unlink(core_dump)
         return ProgramCrashInfo(executable=executable,
                                 core_dump=os.path.basename(filename),
                                 backtrace=lines)
