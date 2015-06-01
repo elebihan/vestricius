@@ -118,8 +118,8 @@ class SimpleCoreHaruspex(Haruspex):
 
     def analyze_core_dump(self, filename):
         if filename.endswith('.gz'):
-            dst = tempfile.NamedTemporaryFile(prefix='vestricius-simple-',
-                                              delete=False)
+            prefix = "vestricius-{}-".format(self.name)
+            dst = tempfile.NamedTemporaryFile(prefix=prefix, delete=False)
             with gzip.open(filename) as src:
                 dst.write(src.read())
             dst.close()
