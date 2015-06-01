@@ -114,7 +114,7 @@ class SimpleCoreHaruspex(Haruspex):
         lines = self._debugger.generate_backtrace(core_dump, path)
         report = Report(filename, self.name)
         report.executable = executable
-        report.coredump = core_dump
+        report.coredump = os.path.basename(core_dump)
         report.debugger = self._debugger.path
         report.backtrace = lines
         if need_cleanup:
