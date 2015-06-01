@@ -93,7 +93,7 @@ class WrappedCoreHaruspex(SimpleCoreHaruspex):
         return self.create_report(filename, crash_info)
 
     def _extract(self, path):
-        workdir = tempfile.mkdtemp(prefix='vestricius-wrapped-')
+        workdir = tempfile.mkdtemp(prefix="vestricius-{}-".format(self.name))
         debug(_("Extracting to '{}'").format(workdir))
         tar = tarfile.open(path, 'r')
         tar.extractall(workdir)
