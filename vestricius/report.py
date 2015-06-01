@@ -28,6 +28,7 @@
    :license: GPLv3+
 """
 
+import os
 import datetime
 import pystache
 
@@ -56,7 +57,7 @@ class Report:
     @type plugin: str
     """
     def __init__(self, filename, plugin):
-        self._filename = filename
+        self._filename = os.path.basename(filename)
         self._plugin = plugin
         self.backtrace = []
         self.executable = None
