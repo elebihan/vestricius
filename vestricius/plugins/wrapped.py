@@ -89,6 +89,7 @@ class WrappedCoreHaruspex(SimpleCoreHaruspex):
         dumpfile = self._find_core_dump(workdir)
         info(_("Found core dump file '{}'").format(os.path.basename(dumpfile)))
         report = SimpleCoreHaruspex.inspect(self, dumpfile)
+        report.coredump = os.path.basename(dumpfile)
         shutil.rmtree(workdir)
         return report
 
