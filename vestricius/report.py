@@ -73,7 +73,7 @@ class Report:
         date = datetime.datetime.now()
         backtrace_lines = [{'backtrace_line': l} for l in self.backtrace]
         data = {
-            'date': date.strftime("%Y%m%d-%H:%M:%S"),
+            'date': date.strftime("%Y-%m-%d %H:%M:%S"),
             'filename': self._filename,
             'plugin': self._plugin,
             'coredump': self.coredump,
