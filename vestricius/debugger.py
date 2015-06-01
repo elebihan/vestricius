@@ -29,6 +29,11 @@
 """
 
 import abc
+from collections import namedtuple
+
+
+ProgramCrashInfo = namedtuple('ProgramCrashInfo',
+                              ['executable', 'backtrace', 'core_dump'])
 
 
 class Debugger:
