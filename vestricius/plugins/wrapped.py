@@ -88,10 +88,9 @@ class WrappedCoreHaruspex(SimpleCoreHaruspex):
         workdir = self._extract(filename)
         dumpfile = self._find_core_dump(workdir)
         info(_("Found core dump file '{}'").format(os.path.basename(dumpfile)))
-        report = SimpleCoreHaruspex.inspect(self, dumpfile)
-        report.coredump = os.path.basename(dumpfile)
+        crash_info = self.analyze_core_dump(dumpfile)
         shutil.rmtree(workdir)
-        return report
+        return self.create_report(filename, crash_info)
 
     def _extract(self, path):
         workdir = tempfile.mkdtemp(prefix='vestricius-wrapped-')
