@@ -35,6 +35,7 @@ OPTIONS
 =======
 
 -v, --version                    display program version and exit
+-D, --debug                      show debug messages
 -P PATH, --plugins-path=PATH     set plugins search path
 
 COMMANDS
