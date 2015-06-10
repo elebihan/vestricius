@@ -153,4 +153,13 @@ def error(message):
     """
     __logger.error(message)
 
+
+def set_level(level):
+    """Set current logging level.
+
+    @param level: the new logging level
+    @type level: str
+    """
+    __logger.setLevel(level)
+
 # vim: ts=4 sw=4 sts=4 et ai
