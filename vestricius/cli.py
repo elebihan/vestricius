@@ -27,7 +27,7 @@ from vestricius.config import Configuration
 from vestricius.presetmanager import PresetManager
 from vestricius.pluginmanager import PluginManager
 from vestricius.utils import setup_i18n
-from vestricius.log import setup_logging, debug, info, error
+from vestricius.log import setup_logging, set_level, debug, info, error
 from gettext import gettext as _
 
 setup_i18n()
@@ -59,6 +59,10 @@ class Application:
                                   dest='plugins_paths',
                                   default=[],
                                   help=_("set plugins search path"))
+        self._parser.add_argument('-D', '--debug',
+                                  action='store_true',
+                                  default=False,
+                                  help=_("show debug messages"))
 
         subparsers = self._parser.add_subparsers(dest='command')
         p = subparsers.add_parser('list',
@@ -204,6 +208,9 @@ class Application:
 
     def run(self):
         args = self._parser.parse_args()
+
+        if args.debug:
+            set_level('DEBUG')
 
         for path in args.plugins_paths:
             self._plugin_mgr.add_search_path(path)
