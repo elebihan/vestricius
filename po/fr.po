@@ -204,7 +204,7 @@ msgstr "Exécution de '{}'"
 
 #: vestricius/fetchers/ftp.py:65
 msgid "Searching for crash archive at {}"
-msgstr "Recherche d'une archive de crash à "
+msgstr "Recherche d'une archive de crash à {}"
 
 #: vestricius/fetchers/ftp.py:84
 msgid "no file found"
