@@ -69,7 +69,7 @@ To inspect a core dump using this preset, use the "inspect" command::
   $ vestricius inspect --preset foo /path/to/crash/archive
 
 A crash archive may be stored on a repository, such as a FTP server. If the URL
-of the repository is set in the prest file, `vestricius(1)` can look for the
+of the repository is set in the preset file, `vestricius(1)` can look for the
 latest crash archive via the command "peek"::
 
   $ vestricius peek --preset foo
