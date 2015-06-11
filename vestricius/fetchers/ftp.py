@@ -33,7 +33,7 @@ import re
 from ftplib import FTP
 from urllib.parse import urlparse, urlunparse
 from datetime import datetime
-from ..log import info
+from ..log import debug
 from ..common import ProgressReporter, FileNotFoundError
 from gettext import gettext as _
 
@@ -61,8 +61,12 @@ class FTPFetcher:
         self._username = parsed_url.username or username
         self._password = parsed_url.password or password
 
+    @property
+    def url(self):
+        return self._url
+
     def lookup(self, pattern=None):
-        info(_("Searching for crash archive at {}").format(self._url))
+        debug(_("Looking for crash archive at {}").format(self.url))
         host, path = self._url.strip('ftp://').split('/', 1)
         with FTP(host) as ftp:
             files = []
