@@ -22,12 +22,14 @@ import os
 import sys
 import argparse
 import traceback
+from subprocess import check_call, CalledProcessError
 from vestricius import __version__
 from vestricius.config import Configuration
 from vestricius.presetmanager import PresetManager
 from vestricius.pluginmanager import PluginManager
 from vestricius.utils import setup_i18n
-from vestricius.log import setup_logging, set_level, debug, info, error
+from vestricius.log import setup_logging, set_level
+from vestricius.log import debug, error, info, warning
 from gettext import gettext as _
 
 setup_i18n()
@@ -138,6 +140,23 @@ class Application:
                        help=_('pattern of crash archive name'))
         p.set_defaults(func=self._parse_cmd_peek)
 
+        p = subparsers.add_parser('watch',
+                                  help=_('watch for new crash archive'))
+        p.add_argument('-p', '--preset',
+                       metavar=_('PRESET'),
+                       help=_('name of the preset to use'))
+        p.add_argument('-C', '--notification',
+                       metavar=_('COMMAND'),
+                       help=_('command to perform to notify user'))
+        p.add_argument('-P', '--pattern',
+                       metavar=_('EXPRESSION'),
+                       help=_('pattern of crash archive name'))
+        p.add_argument('-T', '--duration',
+                       metavar=_('DURATION'),
+                       type=int,
+                       help=_('duration of observation'))
+        p.set_defaults(func=self._parse_cmd_watch)
+
     def _parse_cmd_list(self, args):
         if args.object == 'presets':
             for preset in self._preset_mgr.presets:
@@ -205,6 +224,23 @@ class Application:
             info(_("Generated report '{}'").format(output))
         else:
             print(text)
+
+    def _parse_cmd_watch(self, args):
+        haruspex = self._create_haruspex(args.preset)
+        haruspex.watch(args.duration,
+                       args.pattern,
+                       self._on_archive_found,
+                       args.notification)
+
+    def _on_archive_found(self, filename, date, command):
+        info(_("Found '{}' uploaded on {}").format(filename, date))
+        if command:
+            info(_("Executing '{}'").format(command))
+            try:
+                check_call(command)
+            except CalledProcessError as e:
+                msg = _("Notification command exited with code {}")
+                warning(msg.format(e.returncode))
 
     def run(self):
         args = self._parser.parse_args()
