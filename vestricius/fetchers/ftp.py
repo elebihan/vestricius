@@ -38,7 +38,7 @@ from ..common import ProgressReporter, FileNotFoundError
 from gettext import gettext as _
 
 
-class FtpFetcher:
+class FTPFetcher:
     """Fetches crash archive
 
     @param url: url of the crash archive repository

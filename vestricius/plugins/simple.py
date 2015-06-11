@@ -40,7 +40,7 @@ from vestricius.common import find_executable
 from vestricius.debugger import ProgramCrashInfo
 from vestricius.debuggers.gdb import GDBWrapper
 from vestricius.report import Report
-from vestricius.fetchers.ftp import FtpFetcher
+from vestricius.fetchers.ftp import FTPFetcher
 from gettext import gettext as _
 
 _PRESET_TEXT = """
@@ -112,7 +112,7 @@ class SimpleCoreHaruspex(Haruspex):
     def _create_fetcher(self):
         if not self._repo_url:
             raise RuntimeError(_("URL of repository not set in preset"))
-        return FtpFetcher(self._repo_url)
+        return FTPFetcher(self._repo_url)
 
     def peek(self, pattern):
         fetcher = self._create_fetcher()
