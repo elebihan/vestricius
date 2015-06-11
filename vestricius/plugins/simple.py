@@ -41,6 +41,7 @@ from vestricius.debugger import ProgramCrashInfo
 from vestricius.debuggers.gdb import GDBWrapper
 from vestricius.report import Report
 from vestricius.fetchers.ftp import FTPFetcher
+from vestricius.watchers.ftp import FTPWatcher
 from gettext import gettext as _
 
 _PRESET_TEXT = """
@@ -150,5 +151,14 @@ class SimpleCoreHaruspex(Haruspex):
         report.coredump = crash_info.core_dump
         report.backtrace = crash_info.backtrace
         return report
+
+    def _create_watcher(self):
+        if not self._repo_url:
+            raise RuntimeError(_("URL of repository not set in preset"))
+        return FTPWatcher(self._repo_url)
+
+    def watch(self, duration=None, pattern=None, callback=None, data=None):
+        watcher = self._create_watcher()
+        watcher.watch(duration, pattern, callback, data)
 
 # vim: ts=4 sw=4 sts=4 et ai
