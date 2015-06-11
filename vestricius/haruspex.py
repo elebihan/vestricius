@@ -73,4 +73,24 @@ class Haruspex:
         """
         pass
 
+    @abc.abstractmethod
+    def watch(self, duration=None, pattern=None, callback=None, data=None):
+        """Watch for a new crash archive
+
+        @param duration: number of seconds to watch for new archive, or None
+        for infinite watch.
+        @type duration: int
+
+        @param pattern: regular expression for archive name
+        @type pattern: str
+
+        @param callback: function to call when a new crash archive is found
+        Print to matching result on standard output if None given
+        @type callback: ?
+
+        @param data: data to to pass to the callback
+        @type data: any
+        """
+        pass
+
 # vim: ts=4 sw=4 sts=4 et ai
