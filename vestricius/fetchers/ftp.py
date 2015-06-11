@@ -83,7 +83,7 @@ class FTPFetcher:
                     date = datetime.strptime(timestamp, "%Y%m%d%H%M%S")
                 else:
                     date = datetime.fromtimestamp(0)
-                return (fn, date.strftime("%Y-%m-%d %H:%M:%S"))
+                return (fn, date.strftime("%Y-%m-%d--%H:%M:%S"))
             else:
                 raise FileNotFoundError(_("no file found"))
 
