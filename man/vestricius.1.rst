@@ -27,6 +27,8 @@ vestricius peek
 
 vestricius reveal
 
+vestricius watch
+
 Vestricius is an Haruspex, a priest who practiced divination by
 looking at the entrails of animals. `vestricius(1)` is a command line
 tool which allows the user to get a backtrace from a core dump file.
@@ -88,3 +90,15 @@ Available options:
 -p PRESET, --preset=PRESET    name of the preset to use
 -o FILE, --output=FILE        set output filename
 -P EXPR, --pattern=EXPR       pattern of crash archive name
+
+watch [OPTIONS]
+~~~~~~~~~~~~~~~
+
+Watch the crash archive repository for new files.
+
+Available options:
+
+-p PRESET, --preset=PRESET    name of the preset to use
+-C CMD, --notification=CMD    command to perform to notify user
+-P EXPR, --pattern=EXPR       pattern of crash archive name
+-T N, --duration=N            duration of observation
