@@ -232,12 +232,14 @@ class Application:
                        self._on_archive_found,
                        args.notification)
 
-    def _on_archive_found(self, filename, date, command):
-        info(_("Found '{}' uploaded on {}").format(filename, date))
+    def _on_archive_found(self, filename, timestamp, command):
+        info(_("Found '{}' uploaded on {}").format(filename, timestamp))
         if command:
+            command = command.replace('@FILENAME@', filename)
+            command = command.replace('@TIMESTAMP@', timestamp)
             info(_("Executing '{}'").format(command))
             try:
-                check_call(command)
+                check_call(command.split())
             except CalledProcessError as e:
                 msg = _("Notification command exited with code {}")
                 warning(msg.format(e.returncode))
