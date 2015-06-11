@@ -1,0 +1,134 @@
+#compdef vestricius
+
+_vestricius_list_all_plugins()
+{
+    _vestricius_all_plugins=( $(vestricius list plugins | { while read a; do echo -E - " $a"; done; }) )
+}
+
+_vestricius_list_all_presets()
+{
+    _vestricius_all_presets=( $(vestricius list presets | { while read a; do echo -E - " $a"; done; }) )
+}
+
+(( $+functions[_vestricius_list] )) || _vestricius_list()
+{
+    _arguments -w -S -s \
+        '(-d --details)'{-d,--details}'[display details about each object]'
+}
+
+(( $+functions[_vestricius_add] )) || _vestricius_add()
+{
+    _arguments -w -S -s \
+        '1: :->plugin' \
+        '2: :_guard "^-*" preset'
+
+    if [[ "$state" == plugin ]]; then
+        _vestricius_list_all_plugins
+        compadd -a _vestricius_all_plugins
+    fi
+}
+
+(( $+functions[_vestricius_edit] )) || _vestricius_edit()
+{
+    _arguments -w -S -s \
+        '1: :->preset'
+
+    if [[ "$state" == preset ]]; then
+        _vestricius_list_all_presets
+        compadd -a _vestricius_all_presets
+    fi
+}
+
+(( $+functions[_vestricius_inspect] )) || _vestricius_inspect()
+{
+    _arguments -w -S -s \
+        '(-o --output)'{-o,--output}'[set output file name]:file:_files' \
+        '(-p --preset)'{-p,--preset}'[name of the preset ot use]: :->presets' \
+        '1:file:_files'
+
+    if [[ "$state" == presets ]]; then
+        _vestricius_list_all_presets
+        compadd -a _vestricius_all_presets
+    fi
+}
+
+(( $+functions[_vestricius_reveal] )) || _vestricius_reveal()
+{
+    _arguments -w -S -s \
+        '(-o --output)'{-o,--output}'[set output file name]:file:_files' \
+        '(-p --preset)'{-p,--preset}'[name of the preset ot use]: :->presets' \
+        '(-P --pattern)'{-P,--pattern}'[pattern of crash archive name]:expression' \
+
+    if [[ "$state" == presets ]]; then
+        _vestricius_list_all_presets
+        compadd -a _vestricius_all_presets
+    fi
+}
+
+(( $+functions[_vestricius_peek] )) || _vestricius_peek()
+{
+    _arguments -w -S -s \
+        '(-p --preset)'{-p,--preset}'[name of the preset ot use]: :->presets' \
+        '(-P --pattern)'{-P,--pattern}'[pattern of crash archive name]:expression' \
+
+    if [[ "$state" == presets ]]; then
+        _vestricius_list_all_presets
+        compadd -a _vestricius_all_presets
+    fi
+}
+
+(( $+functions[_vestricius_watch] )) || _vestricius_watch()
+{
+    _arguments -w -S -s \
+        '(-p --preset)'{-p,--preset}'[name of the preset ot use]: :->presets' \
+        '(-C --notification)'{-C,--notification}'[command to perform to notify user]:command' \
+        '(-P --pattern)'{-P,--pattern}'[pattern of crash archive name]:expression' \
+        '(-T --duration)'{-t,--duration}'[duration of observation]:number of seconds' \
+
+    if [[ "$state" == presets ]]; then
+        _vestricius_list_all_presets
+        compadd -a _vestricius_all_presets
+    fi
+}
+
+(( $+functions[_vestricius_command] )) || _vestricius_command()
+{
+    local -a _vestricius_cmds
+    _vestricius_cmds=(
+        "list:list available plugins or presets"
+        "add:add a new preset for a plugin"
+        "edit:edit an existing preset"
+        "remove:remove an existing preset"
+        "inspect:inspect a crash archive"
+        "reveal:fetch and inspect the latest crash archive"
+        "peek:show information about the latest available archive"
+        "watch:watch for new crash archive"
+    )
+    if (( CURRENT == 1 )); then
+        _describe -t commands 'vestricius command' _vestricius_cmds || compadd "$@"
+    else
+        local curcontext="$curcontext"
+
+        cmd="${${_vestricius_cmds[(r)$words[1]:*]%%:*}}"
+
+    if (( $#cmd )); then
+            curcontext="${curcontext%:*:*}:vestricius-${cmd}:"
+
+            _call_function ret _vestricius_$cmd || _message 'no more arguments'
+        else
+            _message "unknown vestricius command: $words[1]"
+        fi
+        return ret
+    fi
+}
+
+_arguments -w -S -s \
+    '(-v --version)'{-v,--version}'' \
+    '(-D --debug)'{-d,--debug}'' \
+    '(-P --plugins-path)'{-P,--plugins-path}'[set plugins search path]:directory:_directories' \
+    '*::vestricius command:_vestricius_command'
+
+# vim: ts=4 sts=4 sw=4 et ai
+# Local Variables:
+# mode: sh
+# End:
