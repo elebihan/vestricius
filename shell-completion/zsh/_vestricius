@@ -13,7 +13,8 @@ _vestricius_list_all_presets()
 (( $+functions[_vestricius_list] )) || _vestricius_list()
 {
     _arguments -w -S -s \
-        '(-d --details)'{-d,--details}'[display details about each object]'
+        '(-d --details)'{-d,--details}'[display details about each object]' \
+        '1:what:(plugins presets)'
 }
 
 (( $+functions[_vestricius_add] )) || _vestricius_add()
