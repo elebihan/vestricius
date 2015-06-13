@@ -37,13 +37,6 @@ _REPORT_YAML_TEMPLATE = """---
 date: {{date}}
 filename: {{filename}}
 plugin: {{plugin}}
-core-dump: {{coredump}}
-executable: {{executable}}
-debugger: {{debugger}}
-backtrace: |
-{{#backtrace_lines}}
-  {{backtrace_line}}
-{{/backtrace_lines}}
 """
 
 
@@ -59,10 +52,22 @@ class Report:
     def __init__(self, filename, plugin):
         self._filename = os.path.basename(filename)
         self._plugin = plugin
-        self.backtrace = []
-        self.executable = None
-        self.debugger = None
-        self.coredump = None
+
+    @property
+    def template(self):
+        """Returns the Mustache template of the report"""
+        return _REPORT_YAML_TEMPLATE
+
+    @property
+    def data(self):
+        """Returns the data of the report as a dictionnary"""
+        date = datetime.datetime.now()
+        data = {
+            'date': date.strftime("%Y-%m-%d %H:%M:%S"),
+            'filename': self._filename,
+            'plugin': self._plugin,
+        }
+        return data
 
     def format_as_yaml(self):
         """Returns the report as YAML document.
@@ -70,19 +75,8 @@ class Report:
         @return: the report formatted as YAML
         @rtype: str
         """
-        date = datetime.datetime.now()
-        backtrace_lines = [{'backtrace_line': l} for l in self.backtrace]
-        data = {
-            'date': date.strftime("%Y-%m-%d %H:%M:%S"),
-            'filename': self._filename,
-            'plugin': self._plugin,
-            'coredump': self.coredump,
-            'executable': self.executable,
-            'debugger': self.debugger,
-            'backtrace_lines': backtrace_lines,
-        }
         renderer = pystache.Renderer(escape=lambda u: u)
-        contents = renderer.render(_REPORT_YAML_TEMPLATE, data)
+        contents = renderer.render(self.template, self.data)
         return contents
 
 # vim: ts=4 sw=4 sts=4 et ai
