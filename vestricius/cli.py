@@ -161,14 +161,14 @@ class Application:
         if args.object == 'presets':
             for preset in self._preset_mgr.presets:
                 if args.with_details:
-                    text = "{0.name:<24} -- {0.plugin:<48}"
+                    text = "{0.name:<32} -- {0.plugin:<48}"
                 else:
                     text = "{0.name}"
                 print(text.format(preset))
         elif args.object == 'plugins':
             for plugin in self._plugin_mgr.plugins:
                 if args.with_details:
-                    text = "{0.name:<24} -- {0.description:<48}"
+                    text = "{0.name:<32} -- {0.description:<48}"
                 else:
                     text = "{0.name}"
                 print(text.format(plugin))
