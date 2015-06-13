@@ -34,6 +34,7 @@ import tempfile
 import gzip
 from vestricius.plugin import Plugin
 from vestricius.haruspex import Haruspex
+from vestricius.report import Report
 from vestricius.log import info, debug
 from vestricius.elf import parse_core_dump_file
 from vestricius.common import find_executable
@@ -55,6 +56,16 @@ URL = ftp://username:password@someserver/somewhere/
 """
 
 _NAME = 'simple-core'
+
+_REPORT_YAML_TEMPLATE = """
+core-dump: {{coredump}}
+executable: {{executable}}
+debugger: {{debugger}}
+backtrace: |
+{{#backtrace_lines}}
+  {{backtrace_line}}
+{{/backtrace_lines}}
+"""
 
 
 class SimpleCorePlugin(Plugin):
@@ -145,7 +156,7 @@ class SimpleCoreHaruspex(Haruspex):
                                 backtrace=lines)
 
     def create_report(self, filename, crash_info):
-        report = Report(filename, self.name)
+        report = SimpleCoreReport(filename, self.name)
         report.executable = crash_info.executable
         report.debugger = self._debugger.path
         report.coredump = crash_info.core_dump
@@ -160,5 +171,31 @@ class SimpleCoreHaruspex(Haruspex):
     def watch(self, duration=None, pattern=None, callback=None, data=None):
         watcher = self._create_watcher()
         watcher.watch(duration, pattern, callback, data)
+
+
+class SimpleCoreReport(Report):
+    def __init__(self, filename, plugin):
+        Report.__init__(self, filename, plugin)
+        self.backtrace = []
+        self.executable = None
+        self.debugger = None
+        self.coredump = None
+
+    @property
+    def template(self):
+        return Report.template.fget(self) + _REPORT_YAML_TEMPLATE
+
+    @property
+    def data(self):
+        backtrace_lines = [{'backtrace_line': l} for l in self.backtrace]
+        extra = {
+            'coredump': self.coredump,
+            'executable': self.executable,
+            'debugger': self.debugger,
+            'backtrace_lines': backtrace_lines,
+        }
+        data = Report.data.fget(self).copy()
+        data.update(extra)
+        return data
 
 # vim: ts=4 sw=4 sts=4 et ai
