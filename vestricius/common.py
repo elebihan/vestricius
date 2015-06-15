@@ -59,36 +59,4 @@ def find_executable(executable, paths):
     raise FileNotFoundError(_("can not find {}").format(executable))
 
 
-class ProgressReporter:
-    """Reports progress
-
-    @param src: name of the file transferred
-    @type src: str
-
-    @param dst: path to the destination file
-    @type dst: str
-
-    @param size: size of the file
-    @type size: int
-
-    @param callback: callback to invoke on updates
-    """
-    def __init__(self, src, dst, size, callback=None):
-        self._src = src
-        self._dst = dst
-        self._size = size
-        self._callback = callback
-        self._nbytes = 0
-
-    def update(self, count):
-        """Updates progress
-
-        @param count: number of bytes transferred
-        @type count: int
-        """
-        self._nbytes += count
-        percentage = int(100 * float(self._nbytes) / float(self._size))
-        if self._callback:
-            self._callback(self._src, self._dst, percentage)
-
 # vim: ts=4 sw=4 sts=4 et ai
