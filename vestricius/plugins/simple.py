@@ -31,7 +31,6 @@
 
 import os
 import tempfile
-import gzip
 from vestricius.plugin import Plugin
 from vestricius.haruspex import Haruspex
 from vestricius.report import Report
@@ -42,7 +41,7 @@ from vestricius.common import GZippedFileAdapter
 from vestricius.debugger import ProgramCrashInfo
 from vestricius.debuggers.gdb import GDBWrapper
 from vestricius.fetchers import create_fetcher
-from vestricius.watchers.ftp import FTPWatcher
+from vestricius.watchers import create_watcher
 from gettext import gettext as _
 
 _PRESET_TEXT = """
@@ -163,13 +162,8 @@ class SimpleCoreHaruspex(Haruspex):
         report.backtrace = crash_info.backtrace
         return report
 
-    def _create_watcher(self):
-        if not self._repo_url:
-            raise RuntimeError(_("URL of repository not set in preset"))
-        return FTPWatcher(self._repo_url)
-
     def watch(self, duration=None, pattern=None, callback=None, data=None):
-        watcher = self._create_watcher()
+        watcher = create_watcher(self._repo_url)
         watcher.watch(duration, pattern, callback, data)
 
 
