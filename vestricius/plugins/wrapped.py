@@ -73,7 +73,7 @@ class WrappedCorePlugin(SimpleCorePlugin):
 
 
 class WrappedCoreHaruspex(SimpleCoreHaruspex):
-    def __init__(self, pattern, debugger, repo_url=None):
+    def __init__(self, pattern, debugger, repo_url):
         SimpleCoreHaruspex.__init__(self, debugger, repo_url)
         self._core_pattern = pattern
 

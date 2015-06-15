@@ -99,7 +99,7 @@ class SimpleCorePlugin(Plugin):
 
 
 class SimpleCoreHaruspex(Haruspex):
-    def __init__(self, debugger, repo_url=None):
+    def __init__(self, debugger, repo_url):
         self._debugger = debugger
         self._search_paths = debugger.solib_paths
         self._repo_url = repo_url
