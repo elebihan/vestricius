@@ -120,10 +120,23 @@ class SimpleCoreHaruspex(Haruspex):
         fetcher = self._create_fetcher()
         fn, date = fetcher.lookup(pattern)
         info(_("Found '{}' ({})").format(fn, date))
-        fn = fetcher.retrieve(fn, tempfile.gettempdir())
+        fn = fetcher.retrieve(fn,
+                              tempfile.gettempdir(),
+                              self._on_block_received)
         report = self.inspect(fn)
         debug(_("Removing '{}'").format(fn))
         return report
+
+    def _on_block_received(self, n_blocks, block_size, n_bytes):
+        count = n_blocks * block_size
+        if n_bytes == -1:
+            n_kbytes = int(count / 1024)
+            if count % 100 == 0:
+                debug(_("Downloading file ({} KB)").format(n_kbytes))
+        else:
+            percentage = int(float(count) / float(n_bytes) * 100)
+            if percentage % 10 == 0:
+                debug(_("Downloading file ({} %)").format(percentage))
 
     def _create_fetcher(self):
         if not self._repo_url:
