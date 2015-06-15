@@ -19,13 +19,23 @@
 #
 
 """
-   vestricius.fetchers
-   ```````````````````
+   vestricius.fetchers.factory
+   ```````````````````````````
 
-   Collection of dowload helpers
+   Manages the collection of downlaod helpers
 
    :copyright: (C) 2015 Eric Le Bihan <eric.le.bihan.dev@free.fr>
    :license: GPLv3+
 """
+
+from .ftp import FTPFetcher
+from gettext import gettext as _
+
+
+def create_fetcher(repo_url):
+    if not repo_url:
+        raise RuntimeError(_("invalid repository URL"))
+    return FTPFetcher(repo_url)
+
 
 # vim: ts=4 sw=4 sts=4 et ai
