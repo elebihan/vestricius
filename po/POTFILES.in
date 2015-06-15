@@ -1,6 +1,7 @@
 vestricius/cli.py
 vestricius/common.py
 vestricius/config.py
+vestricius/debugger.py
 vestricius/elf.py
 vestricius/haruspex.py
 vestricius/plugin.py
@@ -8,9 +9,10 @@ vestricius/pluginmanager.py
 vestricius/preset.py
 vestricius/presetmanager.py
 vestricius/utils.py
-vestricius/debugger.py
+vestricius/watcher.py
 vestricius/debuggers/gdb.py
 vestricius/fetchers/ftp.py
 vestricius/plugins/simple.py
 vestricius/plugins/test.py
 vestricius/plugins/wrapped.py
+vestricius/watchers/ftp.py
