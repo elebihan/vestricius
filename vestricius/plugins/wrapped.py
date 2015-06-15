@@ -30,10 +30,9 @@
 """
 
 import os
-import re
 from vestricius.plugins.simple import SimpleCorePlugin, SimpleCoreHaruspex
-from vestricius.common import TarballAdapter
-from vestricius.log import info, debug
+from vestricius.common import TarballAdapter, find_file
+from vestricius.log import info
 from gettext import gettext as _
 
 
@@ -84,15 +83,9 @@ class WrappedCoreHaruspex(SimpleCoreHaruspex):
 
     def inspect(self, filename):
         with TarballAdapter(filename) as tarball:
-            fn = self._find_core_dump(tarball.folder)
+            fn = find_file(self._core_pattern, [tarball.folder])
             info(_("Found core dump file '{}'").format(os.path.basename(fn)))
             crash_info = self.analyze_core_dump(fn)
             return self.create_report(filename, crash_info)
-
-    def _find_core_dump(self, workdir):
-        for root, dirs, files in os.walk(workdir):
-            for f in files:
-                if re.match(self._core_pattern, f):
-                    return os.path.join(root, f)
 
 # vim: ts=4 sw=4 sts=4 et ai
