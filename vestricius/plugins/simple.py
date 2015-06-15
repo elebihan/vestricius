@@ -188,7 +188,8 @@ class SimpleCoreReport(Report):
 
     @property
     def template(self):
-        return Report.template.fget(self) + _REPORT_YAML_TEMPLATE
+        base = Report.template.fget(self).strip()
+        return base + _REPORT_YAML_TEMPLATE
 
     @property
     def data(self):
