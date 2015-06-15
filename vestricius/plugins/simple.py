@@ -125,6 +125,7 @@ class SimpleCoreHaruspex(Haruspex):
                               self._on_block_received)
         report = self.inspect(fn)
         debug(_("Removing '{}'").format(fn))
+        os.unlink(fn)
         return report
 
     def _on_block_received(self, n_blocks, block_size, n_bytes):
