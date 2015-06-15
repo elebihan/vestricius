@@ -31,11 +31,12 @@
 import os
 import re
 from ftplib import FTP
+from urllib.request import urlretrieve
 from urllib.parse import urlparse, urlunparse
 from datetime import datetime
 from ..log import debug
 from ..fetcher import Fetcher
-from ..common import ProgressReporter, FileNotFoundError
+from ..common import FileNotFoundError
 from gettext import gettext as _
 
 
@@ -66,6 +67,24 @@ class FTPFetcher(Fetcher):
     def url(self):
         return self._url
 
+    def _get_url_full(self):
+        parsed_url = urlparse(self._url)
+        if self._username:
+            text = self._username
+            if self._password:
+                text += ':' + self._password
+            text += '@'
+        else:
+            text = ''
+        url = urlunparse((parsed_url.scheme,
+                          text + parsed_url.hostname,
+                          parsed_url.path,
+                          parsed_url.params,
+                          parsed_url.query,
+                          parsed_url.
+                          fragment))
+        return url
+
     def lookup(self, pattern=None):
         debug(_("Looking for crash archive at {}").format(self.url))
         host, path = self._url.strip('ftp://').split('/', 1)
@@ -88,25 +107,17 @@ class FTPFetcher(Fetcher):
             else:
                 raise FileNotFoundError(_("no file found"))
 
-    def fetch(self, pattern=None, dest=os.getcwd(), callback=None):
+    def fetch(self, pattern=None, dest=None, callback=None):
         fn = self.lookup(pattern)
         return self.retrieve(fn, dest, callback)
 
-    def retrieve(self, filename, dest=os.getcwd(), callback=None):
-        host, path = self._url.strip('ftp://').split('/', 1)
-        output = os.path.join(dest, filename)
+    def retrieve(self, filename, dest=None, callback=None):
+        dest = dest or os.getcwd()
+        path = os.path.join(dest, filename)
+        url = self._get_url_full() + filename
         if not os.path.exists(dest):
             os.makedirs(dest)
-        with FTP(host) as ftp:
-            ftp.login(self._username, self._password)
-            ftp.cwd(path)
-            size = ftp.size(filename)
-            r = ProgressReporter(filename, output, size, callback)
-            with open(output, 'wb') as f:
-                def write_chunk(chunk):
-                    f.write(chunk)
-                    r.update(len(chunk))
-                ftp.retrbinary('RETR ' + filename, write_chunk)
+        (output, headers) = urlretrieve(url, path, callback)
         return output
 
 
