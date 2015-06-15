@@ -31,6 +31,8 @@
 import os
 import gzip
 import tempfile
+import shutil
+import tarfile
 from .log import debug
 from gettext import gettext as _
 
@@ -85,6 +87,34 @@ class GZippedFileAdapter:
     @property
     def path(self):
         return self._path
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.clean()
+
+
+class TarballAdapter:
+    """Extract tarball to to temporary directory.
+
+    @param filename: path to the tarball
+    @type filename: str
+    """
+    def __init__(self, filename):
+        self._folder = tempfile.mkdtemp(prefix="vestricius-")
+        debug(_("Extracting to '{}'").format(self._folder))
+        tar = tarfile.open(filename, 'r')
+        tar.extractall(self._folder)
+        tar.close()
+
+    def clean(self):
+        debug(_("Removing '{}'").format(self._folder))
+        shutil.rmtree(self._folder)
+
+    @property
+    def folder(self):
+        return self._folder
 
     def __enter__(self):
         return self
