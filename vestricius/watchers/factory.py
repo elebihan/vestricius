@@ -19,13 +19,22 @@
 #
 
 """
-   vestricius.watchers
-   ```````````````````
+   vestricius.watchers.factory
+   ```````````````````````````
 
-   Collection of archive repositoriy watchers
+   Manages the collection of repository watchers
 
    :copyright: (C) 2015 Eric Le Bihan <eric.le.bihan.dev@free.fr>
    :license: GPLv3+
 """
+
+from .ftp import FTPWatcher
+from gettext import gettext as _
+
+
+def create_watcher(repo_url):
+    if not repo_url:
+        raise RuntimeError(_("invalid repository URL"))
+    return FTPWatcher(repo_url)
 
 # vim: ts=4 sw=4 sts=4 et ai
