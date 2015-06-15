@@ -41,7 +41,7 @@ from vestricius.common import find_file
 from vestricius.common import GZippedFileAdapter
 from vestricius.debugger import ProgramCrashInfo
 from vestricius.debuggers.gdb import GDBWrapper
-from vestricius.fetchers.ftp import FTPFetcher
+from vestricius.fetchers import create_fetcher
 from vestricius.watchers.ftp import FTPWatcher
 from gettext import gettext as _
 
@@ -117,7 +117,7 @@ class SimpleCoreHaruspex(Haruspex):
         return self.create_report(filename, crash_info)
 
     def reveal(self, pattern):
-        fetcher = self._create_fetcher()
+        fetcher = create_fetcher(self._repo_url)
         fn, date = fetcher.lookup(pattern)
         info(_("Found '{}' ({})").format(fn, date))
         fn = fetcher.retrieve(fn,
@@ -139,13 +139,8 @@ class SimpleCoreHaruspex(Haruspex):
             if percentage % 10 == 0:
                 debug(_("Downloading file ({} %)").format(percentage))
 
-    def _create_fetcher(self):
-        if not self._repo_url:
-            raise RuntimeError(_("URL of repository not set in preset"))
-        return FTPFetcher(self._repo_url)
-
     def peek(self, pattern):
-        fetcher = self._create_fetcher()
+        fetcher = create_fetcher(self._repo_url)
         return fetcher.lookup(pattern)
 
     def analyze_core_dump(self, filename):
