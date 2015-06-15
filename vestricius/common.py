@@ -29,6 +29,7 @@
 """
 
 import os
+import re
 import gzip
 import tempfile
 import shutil
@@ -45,23 +46,27 @@ class InvalidFileError(Exception):
     """Exception raised when a file type is not supported"""
 
 
-def find_executable(executable, paths):
+def find_file(pattern, paths):
     """Find the needle in the haystack.
 
-    @param executable: the needle
-    @type executable: str
+    @param pattern: pattern for the name of the file to look for
+    @type pattern: str
 
-    @param paths: list of haystacks
+    @param paths: list of paths to search into
     @type paths: list of str
 
     @return: the full path of the needle
     @rtype: str
     """
+    p = re.compile(pattern)
     for path in paths:
-        fn = os.path.join(path, executable)
-        if os.path.exists(fn):
-            return fn
-    raise FileNotFoundError(_("can not find {}").format(executable))
+        msg = _("Searching for file matching '{}' in '{}'")
+        debug(msg.format(pattern, path))
+        for root, dirs, files in os.walk(path):
+            for f in files:
+                if p.match(f):
+                    return os.path.join(root, f)
+    raise FileNotFoundError(_("can not find '{}''").format(pattern))
 
 
 class GZippedFileAdapter:
