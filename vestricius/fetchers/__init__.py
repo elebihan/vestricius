@@ -28,4 +28,14 @@
    :license: GPLv3+
 """
 
+from .ftp import FTPFetcher
+from gettext import gettext as _
+
+
+def create_fetcher(repo_url):
+    if not repo_url:
+        raise RuntimeError(_("invalid repository URL"))
+    return FTPFetcher(repo_url)
+
+
 # vim: ts=4 sw=4 sts=4 et ai
