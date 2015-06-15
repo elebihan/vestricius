@@ -31,10 +31,8 @@
 
 import os
 import re
-import tarfile
-import tempfile
-import shutil
 from vestricius.plugins.simple import SimpleCorePlugin, SimpleCoreHaruspex
+from vestricius.common import TarballAdapter
 from vestricius.log import info, debug
 from gettext import gettext as _
 
@@ -85,21 +83,11 @@ class WrappedCoreHaruspex(SimpleCoreHaruspex):
         return _NAME
 
     def inspect(self, filename):
-        workdir = self._extract(filename)
-        dumpfile = self._find_core_dump(workdir)
-        info(_("Found core dump file '{}'").format(os.path.basename(dumpfile)))
-        crash_info = self.analyze_core_dump(dumpfile)
-        debug(_("Removing '{}'").format(workdir))
-        shutil.rmtree(workdir)
-        return self.create_report(filename, crash_info)
-
-    def _extract(self, path):
-        workdir = tempfile.mkdtemp(prefix="vestricius-{}-".format(self.name))
-        debug(_("Extracting to '{}'").format(workdir))
-        tar = tarfile.open(path, 'r')
-        tar.extractall(workdir)
-        tar.close()
-        return workdir
+        with TarballAdapter(filename) as tarball:
+            fn = self._find_core_dump(tarball.folder)
+            info(_("Found core dump file '{}'").format(os.path.basename(fn)))
+            crash_info = self.analyze_core_dump(fn)
+            return self.create_report(filename, crash_info)
 
     def _find_core_dump(self, workdir):
         for root, dirs, files in os.walk(workdir):
