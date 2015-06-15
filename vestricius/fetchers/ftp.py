@@ -34,11 +34,12 @@ from ftplib import FTP
 from urllib.parse import urlparse, urlunparse
 from datetime import datetime
 from ..log import debug
+from ..fetcher import Fetcher
 from ..common import ProgressReporter, FileNotFoundError
 from gettext import gettext as _
 
 
-class FTPFetcher:
+class FTPFetcher(Fetcher):
     """Fetches crash archive
 
     @param url: url of the crash archive repository
