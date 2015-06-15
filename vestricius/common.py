@@ -29,6 +29,9 @@
 """
 
 import os
+import gzip
+import tempfile
+from .log import debug
 from gettext import gettext as _
 
 
@@ -58,5 +61,35 @@ def find_executable(executable, paths):
             return fn
     raise FileNotFoundError(_("can not find {}").format(executable))
 
+
+class GZippedFileAdapter:
+    """If file is gzipped, extract it. Otherwise do nothing"""
+    def __init__(self, filename):
+        if filename.endswith('.gz'):
+            dst = tempfile.NamedTemporaryFile(prefix="vestricius-",
+                                              delete=False)
+            with gzip.open(filename) as src:
+                dst.write(src.read())
+            dst.close()
+            self._path = dst.name
+            self._need_cleanup = True
+        else:
+            self._path = filename
+            self._need_cleanup = False
+
+    def clean(self):
+        if self._need_cleanup:
+            debug(_("Removing '{}'").format(self.path))
+            os.unlink(self.path)
+
+    @property
+    def path(self):
+        return self._path
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.clean()
 
 # vim: ts=4 sw=4 sts=4 et ai
