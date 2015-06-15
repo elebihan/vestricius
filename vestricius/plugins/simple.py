@@ -40,8 +40,8 @@ from vestricius.common import find_file
 from vestricius.common import GZippedFileAdapter
 from vestricius.debugger import ProgramCrashInfo
 from vestricius.debuggers.gdb import GDBWrapper
-from vestricius.fetchers import create_fetcher
-from vestricius.watchers import create_watcher
+from vestricius.fetchers.factory import create_fetcher
+from vestricius.watchers.factory import create_watcher
 from gettext import gettext as _
 
 _PRESET_TEXT = """
