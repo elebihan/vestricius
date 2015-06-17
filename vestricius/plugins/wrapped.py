@@ -66,15 +66,15 @@ class WrappedCorePlugin(SimpleCorePlugin):
         return 'Plugin for core dump file wrapped in a tarball'
 
     def create_haruspex(self, preset):
-        debugger = self._create_debugger(preset)
+        toolbox = self._create_toolbox(preset)
         repo_url = preset.get('Repository', 'URL')
         pattern = preset.get('Extra', 'CorePattern', '^core.+(?:\.gz)?')
-        return WrappedCoreHaruspex(pattern, debugger, repo_url)
+        return WrappedCoreHaruspex(pattern, toolbox, repo_url)
 
 
 class WrappedCoreHaruspex(SimpleCoreHaruspex):
-    def __init__(self, pattern, debugger, repo_url):
-        SimpleCoreHaruspex.__init__(self, debugger, repo_url)
+    def __init__(self, pattern, toolbox, repo_url):
+        SimpleCoreHaruspex.__init__(self, toolbox, repo_url)
         self._core_pattern = pattern
 
     @property
