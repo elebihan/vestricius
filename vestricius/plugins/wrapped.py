@@ -84,7 +84,6 @@ class WrappedCoreHaruspex(SimpleCoreHaruspex):
     def inspect(self, filename):
         with TarballAdapter(filename) as tarball:
             fn = find_file(self._core_pattern, [tarball.folder])
-            info(_("Found core dump file '{}'").format(os.path.basename(fn)))
             crash_info = self.analyze_core_dump(fn)
             return self.create_report(filename, crash_info)
 
