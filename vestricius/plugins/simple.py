@@ -147,6 +147,8 @@ class SimpleCoreHaruspex(Haruspex):
         return fetcher.lookup(pattern)
 
     def analyze_core_dump(self, filename):
+        bn = os.path.basename(filename)
+        info(_("Analyzing core dump file '{}'").format(bn))
         with GZippedFileAdapter(filename) as dump:
             return self._analyzer.analyze(dump.path)
 
