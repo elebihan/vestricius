@@ -55,13 +55,14 @@ URL = ftp://username:password@someserver/somewhere/
 _NAME = 'simple-core'
 
 _REPORT_YAML_TEMPLATE = """
-core-dump: {{coredump}}
-executable: {{executable}}
-debugger: {{debugger}}
-backtrace: |
-{{#backtrace_lines}}
-  {{backtrace_line}}
-{{/backtrace_lines}}
+crash-info:
+  core-dump: {{coredump}}
+  executable: {{executable}}
+  debugger: {{debugger}}
+  backtrace: |
+  {{#backtrace_lines}}
+    {{backtrace_line}}
+  {{/backtrace_lines}}
 """
 
 
