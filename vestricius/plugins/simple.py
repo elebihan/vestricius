@@ -83,9 +83,9 @@ class SimpleCorePlugin(Plugin):
         return _PRESET_TEXT
 
     def create_haruspex(self, preset):
-        debugger = self._create_debugger(preset)
+        toolbox = self._create_toolbox(preset)
         repo_url = preset.get('Repository', 'URL')
-        return SimpleCoreHaruspex(debugger, repo_url)
+        return SimpleCoreHaruspex(toolbox, repo_url)
 
     def _create_debugger(self, preset):
         executable = preset.get_path('Debugger', 'Executable')
@@ -94,10 +94,16 @@ class SimpleCorePlugin(Plugin):
         search_paths = [os.path.expanduser(p) for p in paths]
         return GDBWrapper(executable, search_paths, prefix)
 
+    def _create_toolbox(self, preset):
+        toolbox = {}
+        debugger = self._create_debugger(preset)
+        toolbox['core-dump-analyzer'] = CoreDumpAnalyzer(debugger)
+        return toolbox
+
 
 class SimpleCoreHaruspex(Haruspex):
-    def __init__(self, debugger, repo_url):
-        self._analyzer = CoreDumpAnalyzer(debugger)
+    def __init__(self, toolbox, repo_url):
+        self._analyzer = toolbox['core-dump-analyzer']
         self._repo_url = repo_url
 
     @property
