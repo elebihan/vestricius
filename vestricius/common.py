@@ -46,6 +46,10 @@ class InvalidFileError(Exception):
     """Exception raised when a file type is not supported"""
 
 
+class NoMatchError(Exception):
+    """Exception rasied when no matching item is found"""
+
+
 def find_file(pattern, paths):
     """Find the needle in the haystack.
 
@@ -67,6 +71,31 @@ def find_file(pattern, paths):
                 if p.match(f):
                     return os.path.join(root, f)
     raise FileNotFoundError(_("can not find '{}''").format(pattern))
+
+
+def find_text(filename, pattern):
+    """Look for some text matching a pattern in a file.
+
+    @param filename: path to the file to look into
+    @type filename: string
+
+    @param pattern: regular expression the text shoudl match
+    @type pattern: str
+
+    @return: the matching text
+    @rtype: str
+    """
+    expr = re.compile(pattern)
+    with open(filename) as f:
+        for line in f.readlines():
+            match = expr.match(line.strip())
+            if match:
+                if match.lastindex:
+                    index = 1
+                else:
+                    index = 0
+                return match.group(index)
+    raise NoMatchError(_("can not find text matching '{}'").format(pattern))
 
 
 class GZippedFileAdapter:
