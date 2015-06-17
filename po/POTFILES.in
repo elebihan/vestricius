@@ -16,5 +16,6 @@ vestricius/fetchers/ftp.py
 vestricius/plugins/simple.py
 vestricius/plugins/test.py
 vestricius/plugins/wrapped.py
+vestricius/tools/basic.py
 vestricius/watchers/factory.py
 vestricius/watchers/ftp.py
