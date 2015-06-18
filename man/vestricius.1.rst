@@ -175,6 +175,16 @@ Available options:
 -P EXPR, --pattern=EXPR       pattern of crash archive name
 -T N, --duration=N            duration of observation
 
+ENVIRONMENT VARIABLES
+=====================
+
+Setting the following environment variables may alter the behavior of
+`vestricius(1)`:
+
+- VESTRICIUS_SHOW_STACK_TRACES: if set, show Python stack trace on error.
+- VESTRICIUS_KEEP_GUNZIPPED: if set, do not remove gunzipped files.
+- VESTRICIUS_KEEP_TMPDIR: if set, do not remove temporary directories.
+- VESTRICIUS_KEEP_DOWNLOADED: if set, do not remove downloaded files.
 
 SEE ALSO
 ========
