@@ -45,7 +45,7 @@ SolibPrefix = /usr/lib
 [Repository]
 URL = ftp://username:password@someserver/somewhere/
 
-[Extra]
+[Hints]
 CorePattern = ^core.+(?:\.gz)?
 """
 
@@ -72,7 +72,7 @@ class WrappedCorePlugin(SimpleCorePlugin):
     def create_haruspex(self, preset):
         toolbox = self._create_toolbox(preset)
         repo_url = preset.get('Repository', 'URL')
-        pattern = preset.get('Extra', 'CorePattern', '^core.+(?:\.gz)?')
+        pattern = preset.get('Hints', 'CorePattern', '^core.+(?:\.gz)?')
         return WrappedCoreHaruspex(pattern, toolbox, repo_url)
 
 
