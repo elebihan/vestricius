@@ -21,7 +21,7 @@
 
 from setuptools import setup, find_packages
 from disthelpers import extract_messages, init_catalog, update_catalog
-from disthelpers import build, build_catalog, build_man
+from disthelpers import build, build_catalog, build_man, build_html
 from glob import glob
 import vestricius
 
@@ -60,6 +60,7 @@ setup(name='vestricius',
       author_email='eric.le.bihan.dev@free.fr',
       cmdclass={'build': build,
                 'build_man': build_man,
+                'build_html': build_html,
                 'extract_messages': extract_messages,
                 'init_catalog': init_catalog,
                 'update_catalog': update_catalog,
