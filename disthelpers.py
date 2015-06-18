@@ -158,9 +158,41 @@ class build_man(cmd.Command):
                     man_dir = os.path.join('share', 'man', 'man' + section)
                     self.distribution.data_files.append((man_dir, [dst]))
 
+
+class build_html(cmd.Command):
+    description = 'build HTML version of MAN pages from restructuredtext'
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        name = self.distribution.get_name()
+        src_dir = os.path.join(os.path.dirname(os.curdir), 'man')
+        dst_dir = os.path.join('build', 'html')
+        for path, names, filenames in os.walk(src_dir):
+            for f in filenames:
+                if f.endswith('.rst'):
+                    filename, section, ext = f.rsplit('.', 2)
+                    if not os.path.exists(dst_dir):
+                        os.makedirs(dst_dir)
+                    src = os.path.join(path, f)
+                    dst = os.path.join(dst_dir, filename + '.' + section + '.html')
+                    print("converting {0}".format(src))
+                    publish_file(source_path=src,
+                                 destination_path=dst,
+                                 writer_name='html')
+                    html_dir = os.path.join('share', 'doc', name, 'html')
+                    self.distribution.data_files.append((html_dir, [dst]))
+
+
 class build(_build):
     sub_commands = _build.sub_commands
-    sub_commands += [('build_catalog', None)] + [('build_man', None)]
+    sub_commands += [('build_catalog', None)]
+    sub_commands += [('build_man', None)]
+    sub_commands += [('build_html', None)]
 
     def run(self):
         _build.run(self)
