@@ -116,7 +116,8 @@ class GZippedFileAdapter:
             self._need_cleanup = False
 
     def clean(self):
-        if self._need_cleanup:
+        keep = 'VESTRICIUS_KEEP_GUNZIPPED' in os.environ or False
+        if self._need_cleanup and not keep:
             debug(_("Removing '{}'").format(self.path))
             os.unlink(self.path)
             folder = os.path.dirname(self.path)
@@ -148,8 +149,10 @@ class TarballAdapter:
         tar.close()
 
     def clean(self):
-        debug(_("Removing '{}'").format(self._folder))
-        shutil.rmtree(self._folder)
+        keep = 'VESTRICIUS_KEEP_TMPDIR' in os.environ or False
+        if not keep:
+            debug(_("Removing '{}'").format(self._folder))
+            shutil.rmtree(self._folder)
 
     @property
     def folder(self):
