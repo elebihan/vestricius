@@ -65,6 +65,10 @@ class WrappedCorePlugin(SimpleCorePlugin):
     def description(self):
         return 'Plugin for core dump file wrapped in a tarball'
 
+    @property
+    def preset_text(self):
+        return _PRESET_TEXT
+
     def create_haruspex(self, preset):
         toolbox = self._create_toolbox(preset)
         repo_url = preset.get('Repository', 'URL')
