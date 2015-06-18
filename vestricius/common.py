@@ -34,7 +34,7 @@ import gzip
 import tempfile
 import shutil
 import tarfile
-from .log import debug
+from .log import debug, info
 from gettext import gettext as _
 
 
@@ -99,15 +99,17 @@ def find_text(filename, pattern):
 
 
 class GZippedFileAdapter:
-    """If file is gzipped, extract it. Otherwise do nothing"""
+    """Gunzip file to a temporary directory if needed"""
     def __init__(self, filename):
         if filename.endswith('.gz'):
-            dst = tempfile.NamedTemporaryFile(prefix="vestricius-",
-                                              delete=False)
-            with gzip.open(filename) as src:
-                dst.write(src.read())
-            dst.close()
-            self._path = dst.name
+            root, ext = os.path.splitext(os.path.basename(filename))
+            folder = tempfile.mkdtemp(prefix="vestricius-")
+            path = os.path.join(folder, root)
+            info(_("Extracting to '{}'").format(path))
+            with open(path, 'wb') as dst:
+                with gzip.open(filename) as src:
+                    dst.write(src.read())
+            self._path = path
             self._need_cleanup = True
         else:
             self._path = filename
@@ -117,6 +119,9 @@ class GZippedFileAdapter:
         if self._need_cleanup:
             debug(_("Removing '{}'").format(self.path))
             os.unlink(self.path)
+            folder = os.path.dirname(self.path)
+            debug(_("Removing '{}'").format(folder))
+            os.rmdir(folder)
 
     @property
     def path(self):
