@@ -97,6 +97,19 @@ def find_text(filename, pattern):
                 return match.group(index)
     raise NoMatchError(_("can not find text matching '{}'").format(pattern))
 
+def format_for_shell(args):
+    """Formats a list of string as a command line, suitable for shell.
+
+    If an argument is a list of words, it will be quoted.
+
+    @param args: list of strings
+
+    @return: the command line
+    @rtype: str
+    """
+    new_args = map(lambda a: '\"' + a + '\"' if ' ' in a else a, args)
+    return ' '.join(new_args)
+
 
 class GZippedFileAdapter:
     """Gunzip file to a temporary directory if needed"""
