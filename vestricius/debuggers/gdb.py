@@ -30,6 +30,7 @@
 
 from ..debugger import Debugger
 from ..log import info, debug
+from ..common import format_for_shell
 from subprocess import check_output, STDOUT
 from gettext import gettext as _
 
@@ -59,7 +60,7 @@ class GDBWrapper(Debugger):
             '-ex', 'info threads',
             '-ex', 'quit'
         ]
-        debug(_("Executing '{}'").format(' '.join(args)))
+        debug(_("Executing '{}'").format(format_for_shell(args)))
         output = check_output(args, stderr=STDOUT)
         return output.decode('utf-8', errors='replace').splitlines()
 
