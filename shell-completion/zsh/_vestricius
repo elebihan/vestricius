@@ -40,6 +40,17 @@ _vestricius_list_all_presets()
     fi
 }
 
+(( $+functions[_vestricius_remove] )) || _vestricius_remove()
+{
+    _arguments -w -S -s \
+        '1: :->preset'
+
+    if [[ "$state" == preset ]]; then
+        _vestricius_list_all_presets
+        compadd -a _vestricius_all_presets
+    fi
+}
+
 (( $+functions[_vestricius_inspect] )) || _vestricius_inspect()
 {
     _arguments -w -S -s \
