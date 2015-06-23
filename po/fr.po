@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vestricius\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-17 18:29+0200\n"
+"POT-Creation-Date: 2015-06-23 10:54+0200\n"
 "PO-Revision-Date: 2015-05-26 23:11+0200\n"
 "Last-Translator: Eric Le Bihan <eric.le.bihan.dev@free.fr>\n"
 "Language-Team: French <traduc@traduc.org>\n"
@@ -171,7 +171,7 @@ msgstr "Le rapport '{}' a été généré"
 msgid "Found '{}' uploaded on {}"
 msgstr "'{}' a été trouvé, envoyé le {}"
 
-#: vestricius/cli.py:240 vestricius/debuggers/gdb.py:62
+#: vestricius/cli.py:240 vestricius/debuggers/gdb.py:63
 msgid "Executing '{}'"
 msgstr "Exécution de '{}'"
 
@@ -192,21 +192,21 @@ msgid "Searching for file matching '{}' in '{}'"
 msgstr "Recherche d'un fichier correspondant à '{}' dans '{}'"
 
 #: vestricius/common.py:73
-msgid "can not find '{}''"
+msgid "can not find '{}'"
 msgstr "impossible de trouver '{}'"
 
 #: vestricius/common.py:98
 msgid "can not find text matching '{}'"
 msgstr "impossible de trouver du texte correspondant à '{}'"
 
-#: vestricius/common.py:118 vestricius/common.py:146
-#: vestricius/plugins/simple.py:130
-msgid "Removing '{}'"
-msgstr "Effacement de '{}'"
-
-#: vestricius/common.py:140
+#: vestricius/common.py:121 vestricius/common.py:159
 msgid "Extracting to '{}'"
 msgstr "Extraction vers '{}'"
+
+#: vestricius/common.py:134 vestricius/common.py:137 vestricius/common.py:167
+#: vestricius/plugins/simple.py:132
+msgid "Removing '{}'"
+msgstr "Effacement de '{}'"
 
 #: vestricius/elf.py:148
 msgid "Machine architecture is '{}'"
@@ -244,7 +244,7 @@ msgstr "le réglage existe déjà"
 msgid "preset not found"
 msgstr "réglage introuvable"
 
-#: vestricius/debuggers/gdb.py:46
+#: vestricius/debuggers/gdb.py:47
 msgid "Generating backtrace for {} using {}"
 msgstr "Génération de la pile d'appels pour {} en utilisant {}"
 
@@ -264,15 +264,15 @@ msgstr "aucun fichier trouvé"
 msgid "Found '{}' ({})"
 msgstr "'{}' ({}) a été trouvé"
 
-#: vestricius/plugins/simple.py:139
+#: vestricius/plugins/simple.py:141
 msgid "Downloading file ({} KB)"
 msgstr "Téléchargement du fichier ({} Ko)"
 
-#: vestricius/plugins/simple.py:143
+#: vestricius/plugins/simple.py:145
 msgid "Downloading file ({} %)"
 msgstr "Téléchargement du fichier ({} %)"
 
-#: vestricius/plugins/simple.py:151
+#: vestricius/plugins/simple.py:153
 msgid "Analyzing core dump file '{}'"
 msgstr "Analyse du fichier de vidange système '{}'"
 
