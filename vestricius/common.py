@@ -70,7 +70,7 @@ def find_file(pattern, paths):
             for f in files:
                 if p.match(f):
                     return os.path.join(root, f)
-    raise FileNotFoundError(_("can not find '{}''").format(pattern))
+    raise FileNotFoundError(_("can not find '{}'").format(pattern))
 
 
 def find_text(filename, pattern):
