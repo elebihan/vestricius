@@ -132,6 +132,10 @@ class Application:
 
         p = subparsers.add_parser('peek',
                                   help=_('show information about the latest available archive'))
+        p.add_argument('-C', '--count',
+                       metavar=_('COUNT'),
+                       type=int,
+                       help=_('number of results'))
         p.add_argument('-p', '--preset',
                        metavar=_('PRESET'),
                        help=_('name of the preset to use'))
@@ -205,8 +209,9 @@ class Application:
 
     def _parse_cmd_peek(self, args):
         haruspex = self._create_haruspex(args.preset)
-        filename, date = haruspex.peek(args.pattern)
-        print("{} {}".format(date, filename))
+        results = haruspex.peek(args.pattern, args.count)
+        for (filename, date) in results:
+            print("{} {}".format(date, filename))
 
     def _create_haruspex(self, preset_name):
         name = preset_name or self._config.default_preset
