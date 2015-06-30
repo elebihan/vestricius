@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vestricius\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-23 10:54+0200\n"
+"POT-Creation-Date: 2015-06-29 16:57+0200\n"
 "PO-Revision-Date: 2015-05-26 23:11+0200\n"
 "Last-Translator: Eric Le Bihan <eric.le.bihan.dev@free.fr>\n"
 "Language-Team: French <traduc@traduc.org>\n"
@@ -54,7 +54,7 @@ msgid "plugin to use"
 msgstr "extension à utiliser"
 
 #: vestricius/cli.py:88 vestricius/cli.py:117 vestricius/cli.py:126
-#: vestricius/cli.py:136 vestricius/cli.py:146
+#: vestricius/cli.py:140 vestricius/cli.py:150
 msgid "PRESET"
 msgstr "RÉGLAGE"
 
@@ -102,8 +102,8 @@ msgstr "FICHIER"
 msgid "path to the crash archive"
 msgstr "chemin vers l'archive du crash"
 
-#: vestricius/cli.py:118 vestricius/cli.py:127 vestricius/cli.py:137
-#: vestricius/cli.py:147
+#: vestricius/cli.py:118 vestricius/cli.py:127 vestricius/cli.py:141
+#: vestricius/cli.py:151
 msgid "name of the preset to use"
 msgstr "nom du réglage à utiliser"
 
@@ -111,11 +111,11 @@ msgstr "nom du réglage à utiliser"
 msgid "fetch and inspect the latest available archive"
 msgstr "récupère et inspecte la dernière archive disponible"
 
-#: vestricius/cli.py:129 vestricius/cli.py:139 vestricius/cli.py:152
+#: vestricius/cli.py:129 vestricius/cli.py:143 vestricius/cli.py:156
 msgid "EXPRESSION"
 msgstr "EXPRESSION"
 
-#: vestricius/cli.py:130 vestricius/cli.py:140 vestricius/cli.py:153
+#: vestricius/cli.py:130 vestricius/cli.py:144 vestricius/cli.py:157
 msgid "pattern of crash archive name"
 msgstr "schéma du nom de l'archive du crash"
 
@@ -123,67 +123,75 @@ msgstr "schéma du nom de l'archive du crash"
 msgid "show information about the latest available archive"
 msgstr "affiche des informations sur la dernière archive disponible"
 
-#: vestricius/cli.py:144
+#: vestricius/cli.py:136
+msgid "COUNT"
+msgstr "NOMBRE"
+
+#: vestricius/cli.py:138
+msgid "number of results"
+msgstr "number of results"
+
+#: vestricius/cli.py:148
 msgid "watch for new crash archive"
 msgstr "surveille l'apparition d'une nouvelle archive de crash"
 
-#: vestricius/cli.py:149
+#: vestricius/cli.py:153
 msgid "COMMAND"
 msgstr "COMMANDE"
 
-#: vestricius/cli.py:150
+#: vestricius/cli.py:154
 msgid "command to perform to notify user"
 msgstr "commande à exécuter pour informer l'utilisateur"
 
-#: vestricius/cli.py:155
+#: vestricius/cli.py:159
 msgid "DURATION"
 msgstr "DURÉE"
 
-#: vestricius/cli.py:157
+#: vestricius/cli.py:161
 msgid "duration of observation"
 msgstr "durée de l'observation"
 
-#: vestricius/cli.py:186
+#: vestricius/cli.py:190
 msgid "Do you REALLY want to delete the preset '{}' [y/N]? "
 msgstr "Voulez-vous VRAIMENT effacer le réglage '{}' [o/N]? "
 
-#: vestricius/cli.py:188
+#: vestricius/cli.py:192
 msgid "y"
 msgstr "o"
 
-#: vestricius/cli.py:194
+#: vestricius/cli.py:198
 msgid "Deleted '{}'"
 msgstr "'{} a été effacé"
 
-#: vestricius/cli.py:213
+#: vestricius/cli.py:218
 msgid "Using preset '{}'"
 msgstr "Utilisation du réglage '{}'"
 
-#: vestricius/cli.py:216
+#: vestricius/cli.py:221
 msgid "Using plugin '{}'"
 msgstr "Utilisation de l'extension '{}'"
 
-#: vestricius/cli.py:224
+#: vestricius/cli.py:229
 msgid "Generated report '{}'"
 msgstr "Le rapport '{}' a été généré"
 
-#: vestricius/cli.py:236 vestricius/watchers/ftp.py:59
+#: vestricius/cli.py:241 vestricius/watchers/ftp.py:59
 msgid "Found '{}' uploaded on {}"
 msgstr "'{}' a été trouvé, envoyé le {}"
 
-#: vestricius/cli.py:240 vestricius/debuggers/gdb.py:63
+#: vestricius/cli.py:245 vestricius/debuggers/gdb.py:63
 msgid "Executing '{}'"
 msgstr "Exécution de '{}'"
 
-#: vestricius/cli.py:244
+#: vestricius/cli.py:249
 msgid "Notification command exited with code {}"
 msgstr "La commande de notification s'est terminée avec le code {}"
 
-#: vestricius/cli.py:260
+#: vestricius/cli.py:265
 msgid "Missing command"
 msgstr "Commande absente"
 
-#: vestricius/cli.py:269
+#: vestricius/cli.py:274
 msgid "Command failed ({})"
 msgstr "La commande a échouée ()"
 
@@ -204,7 +212,7 @@ msgid "Extracting to '{}'"
 msgstr "Extraction vers '{}'"
 
 #: vestricius/common.py:134 vestricius/common.py:137 vestricius/common.py:167
-#: vestricius/plugins/simple.py:132
+#: vestricius/plugins/simple.py:135
 msgid "Removing '{}'"
 msgstr "Effacement de '{}'"
 
@@ -256,23 +264,23 @@ msgstr "URL du dépôt invalide"
 msgid "Looking for crash archive at {}"
 msgstr "Recherche d'une archive de crash à {}"
 
-#: vestricius/fetchers/ftp.py:108
-msgid "no file found"
-msgstr "aucun fichier trouvé"
+#: vestricius/plugins/simple.py:126
+msgid "no matching file found"
+msgstr "aucun fichier correspondant trouvé"
 
-#: vestricius/plugins/simple.py:125
+#: vestricius/plugins/simple.py:128
 msgid "Found '{}' ({})"
 msgstr "'{}' ({}) a été trouvé"
 
-#: vestricius/plugins/simple.py:141
+#: vestricius/plugins/simple.py:144
 msgid "Downloading file ({} KB)"
 msgstr "Téléchargement du fichier ({} Ko)"
 
-#: vestricius/plugins/simple.py:145
+#: vestricius/plugins/simple.py:148
 msgid "Downloading file ({} %)"
 msgstr "Téléchargement du fichier ({} %)"
 
-#: vestricius/plugins/simple.py:153
+#: vestricius/plugins/simple.py:156
 msgid "Analyzing core dump file '{}'"
 msgstr "Analyse du fichier de vidange système '{}'"
 
@@ -288,7 +296,7 @@ msgstr "divination factice"
 msgid "Core dump file generated by '{}'"
 msgstr "Fichier de vidange système généré par '{}'"
 
-#: vestricius/tools/basic.py:62
+#: vestricius/tools/basic.py:63
 msgid "Using {} as reference"
 msgstr "Utilisation de {} en tant que référence"
 
