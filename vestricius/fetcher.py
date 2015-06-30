@@ -42,11 +42,17 @@ class Fetcher:
         pass
 
     @abc.abstractmethod
-    def lookup(self, pattern=None):
+    def lookup(self, pattern=None, count=1):
         """Looks for a crash archive in the repository
 
         @param pattern: regular expression of filename to look for.
         @type pattern: str
+
+        @param count: number of results
+        @type count: int
+
+        @return: list of filenames with date of last modification
+        @rtype: list of (str, str)
         """
         pass
 
