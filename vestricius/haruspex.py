@@ -62,14 +62,17 @@ class Haruspex:
         pass
 
     @abc.abstractmethod
-    def peek(self, pattern):
+    def peek(self, pattern, count):
         """Returns information about the latest available crash archive
 
         @param pattern: pattern of the crash archive name
         @type pattern: str
 
-        @return: filename and date of last modification
-        @rtype: (str, str)
+        @param count: numbr of results
+        @type count: int
+
+        @return: list of filenames with date of last modification
+        @rtype: list of (str, str)
         """
         pass
 
