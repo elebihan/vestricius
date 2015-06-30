@@ -81,6 +81,7 @@ _vestricius_list_all_presets()
 {
     _arguments -w -S -s \
         '(-p --preset)'{-p,--preset}'[name of the preset ot use]: :->presets' \
+        '(-C --count)'{-C,--count}'[number of results]:number' \
         '(-P --pattern)'{-P,--pattern}'[pattern of crash archive name]:expression' \
 
     if [[ "$state" == presets ]]; then
