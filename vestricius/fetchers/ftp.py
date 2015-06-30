@@ -85,27 +85,28 @@ class FTPFetcher(Fetcher):
                           fragment))
         return url
 
-    def lookup(self, pattern=None):
+    def lookup(self, pattern=None, count=1):
         debug(_("Looking for crash archive at {}").format(self.url))
+        files = []
+        results = []
         host, path = self._url.strip('ftp://').split('/', 1)
         with FTP(host) as ftp:
-            files = []
             ftp.login(self._username, self._password)
             ftp.cwd(path)
             ftp.retrlines('LIST -t .', lambda l: files.append(l.split()[-1]))
             if pattern:
-                files = [f for f in files if re.search(pattern, f)]
-            if len(files):
-                fn = files[0]
+                expr = re.compile(pattern)
+                files = [f for f in files if expr.search(f)]
+            files = files[:count]
+            for fn in files:
                 line = ftp.sendcmd("MDTM {}".format(fn))
                 code, timestamp = line.split()
                 if code == '213':
                     date = datetime.strptime(timestamp, "%Y%m%d%H%M%S")
                 else:
                     date = datetime.fromtimestamp(0)
-                return (fn, date.strftime("%Y-%m-%d--%H:%M:%S"))
-            else:
-                raise FileNotFoundError(_("no file found"))
+                results.append((fn, date.strftime("%Y-%m-%d--%H:%M:%S")))
+        return results
 
     def fetch(self, pattern=None, dest=None, callback=None):
         fn = self.lookup(pattern)
