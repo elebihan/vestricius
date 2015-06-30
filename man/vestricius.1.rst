@@ -111,6 +111,7 @@ a regular expression which the filename of the archive should match.
 Available options:
 
 -p PRESET, --preset=PRESET    name of the preset to use
+-C N, --count=N               number of results
 -P EXPR, --pattern=EXPR       pattern of crash archive name
 
 reveal [OPTIONS]
