@@ -35,7 +35,7 @@ from vestricius.plugin import Plugin
 from vestricius.haruspex import Haruspex
 from vestricius.report import Report
 from vestricius.log import info, debug
-from vestricius.common import GZippedFileAdapter
+from vestricius.common import GZippedFileAdapter, FileNotFoundError
 from vestricius.debuggers.gdb import GDBWrapper
 from vestricius.tools.basic import CoreDumpAnalyzer
 from vestricius.fetchers.factory import create_fetcher
@@ -121,7 +121,10 @@ class SimpleCoreHaruspex(Haruspex):
 
     def reveal(self, pattern):
         fetcher = create_fetcher(self._repo_url)
-        fn, date = fetcher.lookup(pattern)
+        results = fetcher.lookup(pattern)
+        if not results:
+            raise FileNotFoundError(_("no matching file found"))
+        fn, date = results[0]
         info(_("Found '{}' ({})").format(fn, date))
         fn = fetcher.retrieve(fn,
                               tempfile.gettempdir(),
@@ -144,9 +147,9 @@ class SimpleCoreHaruspex(Haruspex):
             if percentage % 10 == 0:
                 debug(_("Downloading file ({} %)").format(percentage))
 
-    def peek(self, pattern):
+    def peek(self, pattern, count):
         fetcher = create_fetcher(self._repo_url)
-        return fetcher.lookup(pattern)
+        return fetcher.lookup(pattern, count)
 
     def analyze_core_dump(self, filename):
         bn = os.path.basename(filename)
