@@ -69,10 +69,12 @@ class FTPWatcher(Watcher):
 
         while True:
             time.sleep(self._period)
-            result = self._fetcher.lookup(pattern)
-            if latest[0] != result[0]:
-                callback(result[0], result[1], data)
-                latest = result
+            results = self._fetcher.lookup(pattern)
+            if results:
+                result = results[0]
+                if latest[0] != result[0]:
+                    callback(result[0], result[1], data)
+                    latest = result
 
             elapsed += self._period
             if duration and (elapsed >= duration):
