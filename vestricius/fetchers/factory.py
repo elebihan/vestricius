@@ -22,7 +22,7 @@
    vestricius.fetchers.factory
    ```````````````````````````
 
-   Manages the collection of downlaod helpers
+   Manages the collection of download helpers
 
    :copyright: (C) 2015 Eric Le Bihan <eric.le.bihan.dev@free.fr>
    :license: GPLv3+

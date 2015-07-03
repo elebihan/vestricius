@@ -18,6 +18,16 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
+"""
+   vestricius.cli
+   ``````````````
+
+   Provides command line interpeter helpers
+
+   :copyright: (C) 2015 Eric Le Bihan <eric.le.bihan.dev@free.fr>
+   :license: GPLv3+
+"""
+
 import os
 import sys
 import argparse

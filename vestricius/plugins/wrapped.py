@@ -21,7 +21,7 @@
 
 """
    vestricius.plugins.wrapped
-   `````````````````````````
+   ``````````````````````````
 
    Plugin to inspect core dump files wrapped in a tarball
 

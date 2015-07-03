@@ -19,8 +19,8 @@
 #
 
 """
-   vestricius.debuggers.debugger
-   `````````````````````````````
+   vestricius.debugger
+   ```````````````````
 
    Provides debugger abstraction
 

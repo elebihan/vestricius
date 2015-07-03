@@ -18,6 +18,16 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
+"""
+   vestricius.config
+   `````````````````
+
+   Provides configuration files management
+
+   :copyright: (C) 2015 Eric Le Bihan <eric.le.bihan.dev@free.fr>
+   :license: GPLv3+
+"""
+
 import os
 from configparser import ConfigParser
 

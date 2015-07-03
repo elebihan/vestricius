@@ -20,9 +20,9 @@
 
 """
    vestricius
-   `````````````````
+   ``````````
 
-   Insert description here
+   Inspect crash archives
 
    :copyright: (C) 2015 Eric Le Bihan <eric.le.bihan.dev@free.fr>
    :license: GPLv3+
