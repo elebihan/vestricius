@@ -35,6 +35,8 @@ from gettext import gettext as _
 from .log import debug
 from .preset import Preset
 
+_PRESETS_DEFAULT_PATH = '~/.local/share/vestricius/presets'
+
 
 class PresetManager:
     """Manages preset
@@ -44,7 +46,7 @@ class PresetManager:
     """
     def __init__(self, scan=False):
         self._editor = os.environ.get('$EDITOR', 'vi')
-        self._default_dir = os.path.expanduser('~/.config/vestricius.d')
+        self._default_dir = os.path.expanduser(_PRESETS_DEFAULT_PATH)
         if not os.path.exists(self._default_dir):
             os.makedirs(self._default_dir)
         self._search_paths = [self._default_dir]
