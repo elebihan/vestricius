@@ -29,6 +29,6 @@
 """
 
 __docformat__ = 'restructuredtext en'
-__version__ = '0.2.0'
+__version__ = '0.3.1'
 
 # vim: ts=4 sw=4 sts=4 et ai
